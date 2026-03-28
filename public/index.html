@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Business Outreach Generator</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f0f13;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #1a1a24;
+      border-bottom: 1px solid #2d2d3d;
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    header .logo {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #f1f5f9;
+    }
+
+    header span {
+      font-size: 13px;
+      color: #64748b;
+      margin-left: 4px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 24px;
+    }
+
+    .input-card {
+      background: #1a1a24;
+      border: 1px solid #2d2d3d;
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 32px;
+    }
+
+    .input-card h2 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 20px;
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .input-row { grid-template-columns: 1fr; }
+    }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #94a3b8;
+      margin-bottom: 8px;
+    }
+
+    .field input {
+      width: 100%;
+      background: #0f0f13;
+      border: 1px solid #2d2d3d;
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: #f1f5f9;
+      font-size: 15px;
+      transition: border-color 0.15s;
+      outline: none;
+    }
+
+    .field input:focus {
+      border-color: #6366f1;
+    }
+
+    .field input::placeholder { color: #475569; }
+
+    button#generateBtn {
+      width: 100%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+
+    button#generateBtn:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+    button#generateBtn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: #1a1a24;
+      border: 1px solid #2d2d3d;
+      border-radius: 12px;
+      padding: 6px;
+      margin-bottom: 16px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      color: #64748b;
+      padding: 10px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .tab-btn:hover { color: #cbd5e1; background: #252535; }
+    .tab-btn.active { background: #252535; color: #f1f5f9; }
+
+    .tab-btn .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #334155;
+    }
+
+    .tab-btn .status-dot.loading {
+      background: #f59e0b;
+      animation: pulse 1s infinite;
+    }
+
+    .tab-btn .status-dot.done { background: #10b981; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .output-card {
+      background: #1a1a24;
+      border: 1px solid #2d2d3d;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .output-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid #2d2d3d;
+    }
+
+    .output-header .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #94a3b8;
+    }
+
+    .copy-btn {
+      background: #252535;
+      border: 1px solid #2d2d3d;
+      color: #94a3b8;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .copy-btn:hover { background: #2d2d3d; color: #f1f5f9; }
+    .copy-btn.copied { color: #10b981; border-color: #10b981; }
+
+    .output-body {
+      padding: 24px;
+      font-size: 14px;
+      line-height: 1.75;
+      color: #cbd5e1;
+      min-height: 200px;
+      white-space: pre-wrap;
+      font-family: inherit;
+    }
+
+    .output-body.empty {
+      color: #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-style: italic;
+    }
+
+    /* Markdown-like rendering */
+    .output-body strong { color: #f1f5f9; font-weight: 600; }
+    .output-body .md-h1 { font-size: 18px; font-weight: 700; color: #f1f5f9; margin: 16px 0 8px; }
+    .output-body .md-h2 { font-size: 15px; font-weight: 600; color: #a5b4fc; margin: 14px 0 6px; }
+    .output-body .md-h3 { font-size: 14px; font-weight: 600; color: #c4b5fd; margin: 12px 0 4px; }
+    .output-body .md-bullet { padding-left: 16px; }
+
+    .placeholder-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .placeholder-grid { grid-template-columns: 1fr; }
+    }
+
+    .placeholder-card {
+      background: #1a1a24;
+      border: 1px dashed #2d2d3d;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      color: #334155;
+      font-size: 13px;
+    }
+
+    .placeholder-card .icon { font-size: 28px; margin-bottom: 8px; }
+    .placeholder-card .name { font-weight: 600; color: #475569; margin-bottom: 4px; }
+
+    #results { display: none; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">⚡</div>
+  <h1>Business Outreach Generator</h1>
+  <span>powered by Claude</span>
+</header>
+
+<div class="container">
+
+  <div class="input-card">
+    <h2>Generate Content Package</h2>
+    <div class="input-row">
+      <div class="field">
+        <label>Business Type</label>
+        <input type="text" id="businessType" placeholder="e.g. dental clinic, HVAC company, law firm" />
+      </div>
+      <div class="field">
+        <label>Location</label>
+        <input type="text" id="location" placeholder="e.g. Austin, TX" />
+      </div>
+    </div>
+    <button id="generateBtn" onclick="generate()">Generate Outreach Package</button>
+  </div>
+
+  <!-- Placeholder state -->
+  <div id="placeholder">
+    <div class="placeholder-grid">
+      <div class="placeholder-card">
+        <div class="icon">🤖</div>
+        <div class="name">Retell AI Prompt</div>
+        <div>AI receptionist script</div>
+      </div>
+      <div class="placeholder-card">
+        <div class="icon">🌐</div>
+        <div class="name">Website Outline</div>
+        <div>Pages, copy & SEO</div>
+      </div>
+      <div class="placeholder-card">
+        <div class="icon">📞</div>
+        <div class="name">Cold Call Script</div>
+        <div>With objection handlers</div>
+      </div>
+      <div class="placeholder-card">
+        <div class="icon">💬</div>
+        <div class="name">SMS Follow-Ups</div>
+        <div>5-message sequence</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results state -->
+  <div id="results">
+    <div class="tabs">
+      <button class="tab-btn active" data-section="retell" onclick="switchTab('retell')">
+        <span class="status-dot" id="dot-retell"></span> 🤖 Retell AI
+      </button>
+      <button class="tab-btn" data-section="website" onclick="switchTab('website')">
+        <span class="status-dot" id="dot-website"></span> 🌐 Website
+      </button>
+      <button class="tab-btn" data-section="coldcall" onclick="switchTab('coldcall')">
+        <span class="status-dot" id="dot-coldcall"></span> 📞 Cold Call
+      </button>
+      <button class="tab-btn" data-section="sms" onclick="switchTab('sms')">
+        <span class="status-dot" id="dot-sms"></span> 💬 SMS
+      </button>
+    </div>
+
+    <div class="output-card">
+      <div class="output-header">
+        <span class="section-title" id="activeLabel">Retell AI Receptionist Prompt</span>
+        <button class="copy-btn" onclick="copyActive()">Copy</button>
+      </div>
+      <div class="output-body" id="outputBody"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const sections = ['retell', 'website', 'coldcall', 'sms'];
+  const sectionLabels = {
+    retell: 'Retell AI Receptionist Prompt',
+    website: 'Website Outline',
+    coldcall: 'Cold Call Script',
+    sms: 'SMS Follow-Up Sequence'
+  };
+
+  const content = { retell: '', website: '', coldcall: '', sms: '' };
+  let activeSection = 'retell';
+
+  function switchTab(section) {
+    activeSection = section;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`[data-section="${section}"]`).classList.add('active');
+    document.getElementById('activeLabel').textContent = sectionLabels[section];
+    renderOutput();
+  }
+
+  function renderOutput() {
+    const body = document.getElementById('outputBody');
+    const text = content[activeSection];
+    if (!text) {
+      body.className = 'output-body empty';
+      body.innerHTML = 'Waiting to generate...';
+    } else {
+      body.className = 'output-body';
+      body.innerHTML = renderMarkdown(text);
+    }
+  }
+
+  function renderMarkdown(text) {
+    return text
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/^### (.+)$/gm, '<span class="md-h3">$1</span>')
+      .replace(/^## (.+)$/gm, '<span class="md-h2">$1</span>')
+      .replace(/^# (.+)$/gm, '<span class="md-h1">$1</span>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/^[-*] (.+)$/gm, '<span class="md-bullet">• $1</span>');
+  }
+
+  async function generate() {
+    const businessType = document.getElementById('businessType').value.trim();
+    const location = document.getElementById('location').value.trim();
+
+    if (!businessType || !location) {
+      alert('Please enter both a business type and location.');
+      return;
+    }
+
+    // Reset
+    sections.forEach(s => {
+      content[s] = '';
+      document.getElementById(`dot-${s}`).className = 'status-dot';
+    });
+
+    document.getElementById('placeholder').style.display = 'none';
+    document.getElementById('results').style.display = 'block';
+    document.getElementById('generateBtn').disabled = true;
+    document.getElementById('generateBtn').textContent = 'Generating...';
+
+    switchTab('retell');
+
+    try {
+      const resp = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ businessType, location })
+      });
+
+      const reader = resp.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop();
+
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          try {
+            const event = JSON.parse(line.slice(6));
+            handleEvent(event);
+          } catch {}
+        }
+      }
+    } catch (err) {
+      alert('Error: ' + err.message);
+    }
+
+    document.getElementById('generateBtn').disabled = false;
+    document.getElementById('generateBtn').textContent = 'Generate Outreach Package';
+  }
+
+  function handleEvent(event) {
+    if (event.type === 'section_start') {
+      document.getElementById(`dot-${event.section}`).className = 'status-dot loading';
+      if (activeSection === event.section) renderOutput();
+    }
+    else if (event.type === 'token') {
+      content[event.section] += event.text;
+      if (activeSection === event.section) renderOutput();
+    }
+    else if (event.type === 'section_end') {
+      document.getElementById(`dot-${event.section}`).className = 'status-dot done';
+    }
+    else if (event.type === 'error') {
+      alert('Generation error: ' + event.message);
+    }
+  }
+
+  function copyActive() {
+    const text = content[activeSection];
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+
+  // Allow Enter key to trigger generation
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !document.getElementById('generateBtn').disabled) generate();
+  });
+</script>
+
+</body>
+</html>
