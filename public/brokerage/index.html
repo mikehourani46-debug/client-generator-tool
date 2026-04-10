@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lillian Wooster | The Brokerage House</title>
+  <meta name="description" content="Lillian Wooster — Real Estate Professional at The Brokerage House. Search active listings, learn about buying and selling, staging services, and local favorites." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Raleway:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ░░░ NAVIGATION ░░░ -->
+<nav id="navbar">
+  <div class="nav-container">
+    <a href="#" class="logo">
+      <div class="logo-icon-wrap">
+        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="30,3 55,17 55,43 30,57 5,43 5,17"
+            stroke="#D4AF37" stroke-width="1.8" fill="none"/>
+          <polygon points="30,10 48,20 48,40 30,50 12,40 12,20"
+            stroke="#D4AF37" stroke-width="0.6" fill="none" opacity="0.4"/>
+          <path d="M20 36 L20 27 L30 20 L40 27 L40 36"
+            stroke="#D4AF37" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M26 36 L26 30 L30 27 L34 30 L34 36"
+            stroke="#D4AF37" stroke-width="1.4" fill="rgba(212,175,55,0.15)" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="17" y1="27" x2="30" y2="19" stroke="#D4AF37" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="30" y1="19" x2="43" y2="27" stroke="#D4AF37" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <span class="logo-main">The Brokerage House</span>
+        <span class="logo-sub">Lillian Wooster</span>
+      </div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#listings">Listings</a></li>
+      <li><a href="#buy-sell">Buy &amp; Sell</a></li>
+      <li><a href="#staging">Staging</a></li>
+      <li><a href="#blog">Local Favorites</a></li>
+      <li><a href="#contact" class="nav-cta">Contact Lilly</a></li>
+    </ul>
+
+    <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle menu">&#9776;</button>
+  </div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="#about"    onclick="closeMobileMenu()">About</a></li>
+      <li><a href="#listings" onclick="closeMobileMenu()">Listings</a></li>
+      <li><a href="#buy-sell" onclick="closeMobileMenu()">Buy &amp; Sell</a></li>
+      <li><a href="#staging"  onclick="closeMobileMenu()">Staging</a></li>
+      <li><a href="#blog"     onclick="closeMobileMenu()">Local Favorites</a></li>
+      <li><a href="#contact"  onclick="closeMobileMenu()">Contact Lilly</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+<!-- ░░░ HERO ░░░ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-gold-bar"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">The Brokerage House</div>
+
+    <h1 class="hero-title">
+      Find Your<br>
+      <em>Perfect Home</em>
+    </h1>
+
+    <p class="hero-subtitle">Where Dreams Meet Their Address</p>
+
+    <div class="hero-agent">
+      <div class="hero-agent-line"></div>
+      <div class="agent-info">
+        <span class="agent-name">Lillian Wooster</span>
+        <span class="agent-title">Real Estate Professional</span>
+      </div>
+    </div>
+
+    <div class="hero-actions">
+      <a href="#listings" class="btn-primary">Search Listings</a>
+      <a href="#contact"  class="btn-outline">Get in Touch</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+
+<!-- ░░░ VIDEO REEL ░░░ -->
+<section id="videos" class="section-dark">
+  <div class="container">
+    <div class="section-label">Experience</div>
+    <h2 class="section-title fade-in">The <em>Lilly</em> Difference</h2>
+    <p class="section-desc fade-in">See why clients love working with Lilly — approachable, relatable, and genuinely passionate about finding you the perfect place to call home.</p>
+
+    <div class="videos-grid">
+
+      <div class="video-card fade-in">
+        <div class="video-thumb">
+          <div class="video-thumb-label">Her Signature Move</div>
+          <div class="video-play">&#9654;</div>
+        </div>
+        <div class="video-info">
+          <h3>The Card Toss</h3>
+          <p>Making her mark — one card at a time. That's Lilly.</p>
+        </div>
+      </div>
+
+      <div class="video-card fade-in">
+        <div class="video-thumb">
+          <div class="video-thumb-label">Welcome In</div>
+          <div class="video-play">&#9654;</div>
+        </div>
+        <div class="video-info">
+          <h3>Opening Doors</h3>
+          <p>Every door Lilly opens is an invitation to imagine what's possible.</p>
+        </div>
+      </div>
+
+      <div class="video-card fade-in">
+        <div class="video-thumb">
+          <div class="video-thumb-label">Staging Mastery</div>
+          <div class="video-play">&#9654;</div>
+        </div>
+        <div class="video-info">
+          <h3>The Perfect Touch</h3>
+          <p>Transforming spaces into the feeling of home — from first look to sold.</p>
+        </div>
+      </div>
+
+      <div class="video-card fade-in">
+        <div class="video-thumb">
+          <div class="video-thumb-label">Always Available</div>
+          <div class="video-play">&#9654;</div>
+        </div>
+        <div class="video-info">
+          <h3>Call Anytime</h3>
+          <p>Your calls are always answered. Lilly picks up — every time.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ░░░ ABOUT ░░░ -->
+<section id="about" class="section-light">
+  <div class="container">
+    <div class="about-grid">
+
+      <div class="about-image fade-in">
+        <div class="photo-placeholder">
+          <div class="photo-placeholder-inner">
+            <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="40" cy="30" r="18" stroke="#D4AF37" stroke-width="1.5" fill="none"/>
+              <path d="M10 70 C10 52 70 52 70 70" stroke="#D4AF37" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            </svg>
+            <p>Lilly's Photo</p>
+          </div>
+        </div>
+        <div class="about-stats">
+          <div class="stat">
+            <span class="stat-number">3+</span>
+            <span class="stat-label">Years at The Brokerage House</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Community Commitment</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">∞</span>
+            <span class="stat-label">Heart &amp; Dedication</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">5&#9733;</span>
+            <span class="stat-label">Client Experience</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-content fade-in">
+        <div class="section-label">About Lilly</div>
+        <h2 class="section-title dark">A Real Estate Pro<br>Who Truly <em>Cares</em></h2>
+
+        <div class="about-bio">
+          <p>With more than three years of behind-the-scenes experience at The Brokerage House, Lilly has developed a deep understanding of the real estate market and the many moving parts that make each transaction successful. Her attention to detail, creative marketing insight, and commitment to excellence have not only shaped her professional growth — they have contributed to the continued growth and success of the brokerage.</p>
+          <p>Through her work, Lilly has mastered the art of staging, helping clients see beyond four walls and truly connect to the feeling of "home." Her natural ability to elevate spaces, paired with her thoughtful approach to client care, creates a seamless and inspiring experience from start to finish.</p>
+          <p>With a family background in construction, Lilly brings an added layer of expertise — offering valuable insight into the building process and access to trusted local tradespeople for clients considering improvements or investments.</p>
+          <p>Lilly is deeply passionate about this community, from supporting local businesses to enjoying everything the beautiful lakes and seasons have to offer. She is dedicated to helping others find not just a house, but a place to truly belong.</p>
+        </div>
+
+        <div class="about-tags">
+          <span class="tag">Staging Expert</span>
+          <span class="tag">Community Builder</span>
+          <span class="tag">Construction Insight</span>
+          <span class="tag">Skilled Negotiator</span>
+          <span class="tag">Local Expert</span>
+          <span class="tag">Lake Life</span>
+        </div>
+
+        <a href="#contact" class="btn-primary dark">Let's Connect</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ░░░ LISTINGS ░░░ -->
+<section id="listings" class="section-dark">
+  <div class="container">
+    <div class="section-label">Properties</div>
+    <h2 class="section-title fade-in">Active <em>Listings</em></h2>
+    <p class="section-desc fade-in">Browse current listings from the MLS. Filter by price, bedrooms, and type to find your perfect match. Updated regularly.</p>
+
+    <!-- Search + Filters -->
+    <div class="search-bar fade-in">
+      <div class="search-field wide">
+        <label>Search</label>
+        <input type="text" id="searchInput" placeholder="City, neighborhood, or address..." oninput="filterListings()" />
+      </div>
+      <div class="search-field">
+        <label>Min Price</label>
+        <select id="minPrice" onchange="filterListings()">
+          <option value="">No Min</option>
+          <option value="100000">$100K</option>
+          <option value="200000">$200K</option>
+          <option value="300000">$300K</option>
+          <option value="400000">$400K</option>
+          <option value="500000">$500K</option>
+          <option value="750000">$750K</option>
+          <option value="1000000">$1M</option>
+        </select>
+      </div>
+      <div class="search-field">
+        <label>Max Price</label>
+        <select id="maxPrice" onchange="filterListings()">
+          <option value="">No Max</option>
+          <option value="200000">$200K</option>
+          <option value="300000">$300K</option>
+          <option value="400000">$400K</option>
+          <option value="500000">$500K</option>
+          <option value="750000">$750K</option>
+          <option value="1000000">$1M</option>
+          <option value="2000000">$2M+</option>
+        </select>
+      </div>
+      <div class="search-field">
+        <label>Beds</label>
+        <select id="beds" onchange="filterListings()">
+          <option value="">Any</option>
+          <option value="1">1+</option>
+          <option value="2">2+</option>
+          <option value="3">3+</option>
+          <option value="4">4+</option>
+        </select>
+      </div>
+      <div class="search-field">
+        <label>Type</label>
+        <select id="propType" onchange="filterListings()">
+          <option value="">All Types</option>
+          <option value="Single Family">Single Family</option>
+          <option value="Condo">Condo</option>
+          <option value="Townhome">Townhome</option>
+          <option value="Land">Land</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="listings-grid" id="listingsGrid">
+      <!-- Populated by app.js -->
+    </div>
+
+    <p class="mls-note">
+      Listings displayed are sample MLS data. For live IDX integration, connect an MLS-licensed IDX provider.
+      Contact Lilly for the most current availability and to schedule private showings.
+    </p>
+  </div>
+</section>
+
+
+<!-- ░░░ BUY & SELL ░░░ -->
+<section id="buy-sell" class="section-light">
+  <div class="container">
+    <div class="section-label">Services</div>
+    <h2 class="section-title dark fade-in">Ready to <em>Buy or Sell?</em></h2>
+    <p class="section-desc dark fade-in">Whether you're searching for your dream home or preparing to move on, Lilly is with you every step of the way.</p>
+
+    <div class="buy-sell-grid">
+
+      <div class="service-card buying fade-in">
+        <span class="service-emoji">&#127968;</span>
+        <h3>Buying a Home</h3>
+        <p>Finding your dream home is one of life's most exciting journeys. Lilly will guide you every step — from the first search to the moment you turn the key.</p>
+        <ul class="service-list">
+          <li>Personalized property search tailored to you</li>
+          <li>Deep neighborhood expertise &amp; local insight</li>
+          <li>Strategic offer writing &amp; negotiation</li>
+          <li>Inspection, appraisal &amp; closing guidance</li>
+          <li>Access to trusted local tradespeople</li>
+        </ul>
+        <a href="#contact" class="btn-primary dark">Start Your Search</a>
+      </div>
+
+      <div class="service-card selling fade-in">
+        <span class="service-emoji">&#128273;</span>
+        <h3>Selling Your Home</h3>
+        <p>Selling is about more than a transaction — it's about finding the right buyer who will love your home as much as you do. Lilly's marketing expertise makes your home stand out.</p>
+        <ul class="service-list">
+          <li>Professional staging consultation</li>
+          <li>Creative, targeted marketing strategy</li>
+          <li>MLS listing + full digital exposure</li>
+          <li>Expert pricing analysis &amp; positioning</li>
+          <li>Skilled negotiation through closing</li>
+        </ul>
+        <a href="#contact" class="btn-primary dark">List with Lilly</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ░░░ STAGING ░░░ -->
+<section id="staging" class="section-dark">
+  <div class="container">
+    <div class="section-label">Staging Services</div>
+    <h2 class="section-title fade-in">Elevate Your <em>Space</em></h2>
+    <p class="section-desc fade-in">Staging isn't just about furniture — it's about storytelling. Lilly helps buyers fall in love before they've even stepped inside.</p>
+
+    <div class="staging-feature fade-in">
+      <div class="staging-img-placeholder"></div>
+
+      <div class="staging-content">
+        <h3>The Art of First Impressions</h3>
+        <p>With a trained eye and an innate sense of design, Lilly transforms every room into a space that feels both aspirational and attainable — making buyers say <em>"this is home."</em></p>
+
+        <div class="staging-benefits">
+          <div class="benefit">
+            <span class="benefit-icon">&#10022;</span>
+            <div>
+              <strong>Faster Sales</strong>
+              <p>Staged homes consistently sell faster than unstaged properties on the market.</p>
+            </div>
+          </div>
+          <div class="benefit">
+            <span class="benefit-icon">&#10022;</span>
+            <div>
+              <strong>Higher Offers</strong>
+              <p>Professionally staged homes attract stronger offers and higher final sale prices.</p>
+            </div>
+          </div>
+          <div class="benefit">
+            <span class="benefit-icon">&#10022;</span>
+            <div>
+              <strong>Stand Out Online</strong>
+              <p>Beautiful spaces photograph better, attracting more views and showings.</p>
+            </div>
+          </div>
+        </div>
+
+        <a href="#contact" class="btn-primary">Book a Staging Consult</a>
+      </div>
+    </div>
+
+    <!-- Process Steps -->
+    <div class="staging-steps fade-in">
+      <div class="step">
+        <span class="step-num">01</span>
+        <h4>Consultation</h4>
+        <p>Lilly walks through your home and creates a custom staging plan tailored to your property.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <h4>Preparation</h4>
+        <p>Declutter, deep clean, and address any quick repairs or updates for maximum impact.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <h4>Transformation</h4>
+        <p>Furniture arrangement, accent pieces, and curated styling touches that tell a story.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">04</span>
+        <h4>Photography</h4>
+        <p>Professional photos captured at the perfect moment to make your listing shine online.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ░░░ LOCAL FAVORITES / BLOG ░░░ -->
+<section id="blog" class="section-light">
+  <div class="container">
+    <div class="section-label">Community</div>
+    <h2 class="section-title dark fade-in">Local <em>Favorites</em></h2>
+    <p class="section-desc dark fade-in">Lilly's love for this community runs deep. Here are her favorite spots, hidden gems, and seasonal highlights from right here at home.</p>
+
+    <div class="blog-grid">
+
+      <div class="blog-card featured fade-in">
+        <div class="blog-img">
+          <div class="blog-img-label">Photo Coming Soon</div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <span class="blog-tag">Community</span>
+            <span class="blog-date">April 2025</span>
+          </div>
+          <h3>Spring on the Lake: My Favorite Things to Do This Season</h3>
+          <p>From morning paddleboard sessions to sunset walks along the water, here's how I love to soak in springtime right here in our backyard. The lakes are calling — come on in.</p>
+          <a href="#blog" class="blog-link">Read More &#8594;</a>
+        </div>
+      </div>
+
+      <div class="blog-card fade-in">
+        <div class="blog-img">
+          <div class="blog-img-label">Photo Coming Soon</div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <span class="blog-tag">Local Eats</span>
+            <span class="blog-date">March 2025</span>
+          </div>
+          <h3>The Best Local Spots You Need to Try Right Now</h3>
+          <p>My go-to restaurants, coffee shops, and hidden gems that make this area so special...</p>
+          <a href="#blog" class="blog-link">Read More &#8594;</a>
+        </div>
+      </div>
+
+      <div class="blog-card fade-in">
+        <div class="blog-img">
+          <div class="blog-img-label">Photo Coming Soon</div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <span class="blog-tag">Real Estate Tips</span>
+            <span class="blog-date">February 2025</span>
+          </div>
+          <h3>5 Things Every First-Time Buyer Should Know</h3>
+          <p>From pre-approval to closing day — here's everything I wish someone had told me first.</p>
+          <a href="#blog" class="blog-link">Read More &#8594;</a>
+        </div>
+      </div>
+
+      <div class="blog-card fade-in">
+        <div class="blog-img">
+          <div class="blog-img-label">Photo Coming Soon</div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <span class="blog-tag">Home Tips</span>
+            <span class="blog-date">January 2025</span>
+          </div>
+          <h3>Quick Staging Wins You Can Do This Weekend</h3>
+          <p>You don't need a big budget to make your home shine. These are my favorite easy wins.</p>
+          <a href="#blog" class="blog-link">Read More &#8594;</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ░░░ CONTACT ░░░ -->
+<section id="contact" class="section-dark">
+  <div class="container">
+    <div class="section-label">Get in Touch</div>
+    <h2 class="section-title fade-in">Let's <em>Connect</em></h2>
+
+    <div class="contact-grid">
+
+      <!-- Left: Info + Socials -->
+      <div class="fade-in">
+        <div class="contact-items">
+          <div class="contact-item">
+            <span class="contact-icon">&#128205;</span>
+            <div>
+              <strong>Office</strong>
+              <span>The Brokerage House<br>Your City, State</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <span class="contact-icon">&#128222;</span>
+            <div>
+              <strong>Phone</strong>
+              <span>(555) 000-0000</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <span class="contact-icon">&#9993;</span>
+            <div>
+              <strong>Email</strong>
+              <span>lilly@thebrokeragehouse.com</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="socials">
+          <h4>Follow Along</h4>
+          <div class="social-links">
+            <a href="#" class="social-btn" aria-label="Instagram">
+              <span class="social-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5"/>
+                  <circle cx="12" cy="12" r="4.5"/>
+                  <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+                </svg>
+              </span>
+              <span>Instagram</span>
+            </a>
+            <a href="#" class="social-btn" aria-label="Facebook">
+              <span class="social-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+                </svg>
+              </span>
+              <span>Facebook</span>
+            </a>
+            <a href="#" class="social-btn" aria-label="TikTok">
+              <span class="social-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.3 6.3 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.7a8.17 8.17 0 004.79 1.54V6.79a4.85 4.85 0 01-1.02-.1z"/>
+                </svg>
+              </span>
+              <span>TikTok</span>
+            </a>
+            <a href="#" class="social-btn" aria-label="LinkedIn">
+              <span class="social-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/>
+                  <rect x="2" y="9" width="4" height="12"/>
+                  <circle cx="4" cy="4" r="2"/>
+                </svg>
+              </span>
+              <span>LinkedIn</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Form -->
+      <div class="contact-form fade-in">
+        <h3>Send a Message</h3>
+        <form id="contactForm" onsubmit="submitForm(event)">
+          <div class="form-row">
+            <div class="form-field">
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" placeholder="Jane" required />
+            </div>
+            <div class="form-field">
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" placeholder="Smith" required />
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="jane@example.com" required />
+          </div>
+          <div class="form-field">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" placeholder="(555) 000-0000" />
+          </div>
+          <div class="form-field">
+            <label for="interest">I'm Interested In...</label>
+            <select id="interest">
+              <option>Buying a Home</option>
+              <option>Selling My Home</option>
+              <option>Staging Services</option>
+              <option>General Inquiry</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="message">Message</label>
+            <textarea id="message" placeholder="Tell me a bit about what you're looking for..." rows="4"></textarea>
+          </div>
+          <button type="submit" class="btn-primary btn-full">Send Message</button>
+        </form>
+        <div class="form-success" id="formSuccess">
+          &#10022; Thank you! Lilly will be in touch soon. &#10022;
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ░░░ FOOTER ░░░ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+        <a href="#" class="logo footer-logo">
+          <div class="logo-icon-wrap">
+            <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="30,3 55,17 55,43 30,57 5,43 5,17" stroke="#D4AF37" stroke-width="1.8" fill="none"/>
+              <path d="M20 36 L20 27 L30 20 L40 27 L40 36" stroke="#D4AF37" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M26 36 L26 30 L30 27 L34 30 L34 36" stroke="#D4AF37" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="logo-text">
+            <span class="logo-main">The Brokerage House</span>
+            <span class="logo-sub">Lillian Wooster</span>
+          </div>
+        </a>
+        <p>"Helping you find not just a house, but a place to truly belong."</p>
+      </div>
+
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#about">About Lilly</a></li>
+          <li><a href="#listings">Search Listings</a></li>
+          <li><a href="#buy-sell">Buy &amp; Sell</a></li>
+          <li><a href="#staging">Staging</a></li>
+          <li><a href="#blog">Local Favorites</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p>
+          Lillian Wooster<br>
+          The Brokerage House<br>
+          (555) 000-0000<br>
+          lilly@thebrokeragehouse.com
+        </p>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2025 Lillian Wooster &middot; The Brokerage House &middot; All Rights Reserved</p>
+      <span class="equal-housing">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        Equal Housing Opportunity &middot; Licensed Real Estate Professional
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
