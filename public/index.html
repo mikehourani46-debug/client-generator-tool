@@ -305,6 +305,11 @@
         <div class="name">SMS Follow-Ups</div>
         <div>5-message sequence</div>
       </div>
+      <div class="placeholder-card">
+        <div class="icon">🎉</div>
+        <div class="name">Welcome Package</div>
+        <div>Post-close onboarding email</div>
+      </div>
     </div>
   </div>
 
@@ -323,6 +328,9 @@
       <button class="tab-btn" data-section="sms" onclick="switchTab('sms')">
         <span class="status-dot" id="dot-sms"></span> 💬 SMS
       </button>
+      <button class="tab-btn" data-section="welcome" onclick="switchTab('welcome')">
+        <span class="status-dot" id="dot-welcome"></span> 🎉 Welcome
+      </button>
     </div>
 
     <div class="output-card">
@@ -337,15 +345,16 @@
 </div>
 
 <script>
-  const sections = ['retell', 'website', 'coldcall', 'sms'];
+  const sections = ['retell', 'website', 'coldcall', 'sms', 'welcome'];
   const sectionLabels = {
     retell: 'Retell AI Receptionist Prompt',
     website: 'Website Outline',
     coldcall: 'Cold Call Script',
-    sms: 'SMS Follow-Up Sequence'
+    sms: 'SMS Follow-Up Sequence',
+    welcome: 'Client Welcome Package'
   };
 
-  const content = { retell: '', website: '', coldcall: '', sms: '' };
+  const content = { retell: '', website: '', coldcall: '', sms: '', welcome: '' };
   let activeSection = 'retell';
 
   function switchTab(section) {

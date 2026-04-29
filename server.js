@@ -77,7 +77,52 @@ Also write 2 bonus messages:
 - Appointment reminder (24 hrs before)
 - Review request (after service completion)
 
-Keep language casual, friendly, and local to ${location}.`
+Keep language casual, friendly, and local to ${location}.`,
+
+  welcome: (businessType, location) => `You are an expert at client onboarding for AI receptionist services sold to local businesses.
+
+Write a client welcome package message for a ${businessType} business in ${location} that just said YES to an AI receptionist service. This is a copy/paste message the agency owner sends immediately after closing the deal.
+
+Structure it EXACTLY like this:
+
+---
+**Subject: Welcome to [Agency Name] — Here's Everything You Need**
+
+Hi [Client First Name],
+
+Welcome aboard! We're excited to get your AI receptionist up and running. Here's a quick overview of everything.
+
+**What You're Getting**
+List 4-6 specific deliverables for a ${businessType} business (e.g. custom AI receptionist configured for their industry, call handling for [common call types], appointment booking integration, monthly call review, etc.)
+
+**What Happens Next**
+Numbered list of 4-5 onboarding steps with realistic timeframes (e.g. Step 1: Complete your onboarding form — takes ~5 min. Step 2: We build and configure your AI receptionist — 2-3 business days. etc.)
+
+**Your Onboarding Form**
+[ONBOARDING FORM LINK]
+Please complete this within 24 hours so we can get started right away. It takes about 5 minutes.
+
+**Payment**
+[PAYMENT LINK]
+Your first invoice is ready. Once payment is received, we'll kick off your build immediately.
+
+**Support**
+Email: [SUPPORT EMAIL]
+Response time: within 1 business day
+For urgent issues: [PHONE/TEXT NUMBER]
+
+**Go-Live Target**
+Based on a quick turnaround, your AI receptionist should be live and answering calls within [X business days].
+
+Looking forward to working with you!
+
+[Your Name]
+[Agency Name]
+[Phone]
+[Website]
+---
+
+After the message, add a short section called **Customization Notes** with 3-4 tips the agency owner should fill in before sending (what to personalize, what links to add, any industry-specific details to consider for a ${businessType} business).`
 };
 
 app.post('/api/generate', async (req, res) => {
@@ -95,12 +140,13 @@ app.post('/api/generate', async (req, res) => {
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Connection', 'keep-alive');
 
-  const sections = ['retell', 'website', 'coldcall', 'sms'];
+  const sections = ['retell', 'website', 'coldcall', 'sms', 'welcome'];
   const sectionLabels = {
     retell: 'Retell AI Receptionist Prompt',
     website: 'Website Outline',
     coldcall: 'Cold Call Script',
-    sms: 'SMS Follow-Up Sequence'
+    sms: 'SMS Follow-Up Sequence',
+    welcome: 'Client Welcome Package'
   };
 
   const sendEvent = (data) => {
