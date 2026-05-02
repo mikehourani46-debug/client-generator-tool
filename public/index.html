@@ -22,237 +22,233 @@
       align-items: center;
       gap: 12px;
     }
-
     header .logo {
-      width: 36px;
-      height: 36px;
+      width: 36px; height: 36px;
       background: linear-gradient(135deg, #6366f1, #8b5cf6);
       border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       font-size: 18px;
     }
+    header h1 { font-size: 20px; font-weight: 600; color: #f1f5f9; }
+    header span { font-size: 13px; color: #64748b; margin-left: 4px; }
 
-    header h1 {
-      font-size: 20px;
-      font-weight: 600;
-      color: #f1f5f9;
-    }
+    .container { max-width: 960px; margin: 40px auto; padding: 0 24px; }
 
-    header span {
-      font-size: 13px;
-      color: #64748b;
-      margin-left: 4px;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 24px;
-    }
-
+    /* ── Input card ── */
     .input-card {
       background: #1a1a24;
       border: 1px solid #2d2d3d;
       border-radius: 16px;
       padding: 32px;
-      margin-bottom: 32px;
+      margin-bottom: 20px;
     }
-
     .input-card h2 {
-      font-size: 16px;
-      font-weight: 600;
-      color: #94a3b8;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+      font-size: 13px; font-weight: 600; color: #64748b;
+      text-transform: uppercase; letter-spacing: 0.08em;
       margin-bottom: 20px;
     }
 
     .input-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 20px;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 16px;
     }
-
-    @media (max-width: 600px) {
-      .input-row { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 680px) { .input-row { grid-template-columns: 1fr; } }
 
     .field label {
-      display: block;
-      font-size: 13px;
-      font-weight: 500;
-      color: #94a3b8;
-      margin-bottom: 8px;
+      display: block; font-size: 12px; font-weight: 500;
+      color: #94a3b8; margin-bottom: 7px;
     }
-
     .field input {
       width: 100%;
       background: #0f0f13;
       border: 1px solid #2d2d3d;
       border-radius: 8px;
-      padding: 12px 16px;
+      padding: 11px 14px;
       color: #f1f5f9;
-      font-size: 15px;
+      font-size: 14px;
       transition: border-color 0.15s;
       outline: none;
     }
-
-    .field input:focus {
-      border-color: #6366f1;
-    }
-
+    .field input:focus { border-color: #6366f1; }
     .field input::placeholder { color: #475569; }
 
-    button#generateBtn {
-      width: 100%;
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      color: #fff;
-      border: none;
+    .btn-row {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .btn-lookup {
+      background: #252535;
+      border: 1px solid #3d3d55;
+      color: #a5b4fc;
       border-radius: 10px;
-      padding: 14px;
-      font-size: 15px;
-      font-weight: 600;
+      padding: 12px 20px;
+      font-size: 14px; font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .btn-lookup:hover:not(:disabled) { background: #2d2d45; border-color: #6366f1; color: #c7d2fe; }
+    .btn-lookup:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    .btn-generate {
+      flex: 1;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff; border: none;
+      border-radius: 10px;
+      padding: 12px 20px;
+      font-size: 14px; font-weight: 600;
       cursor: pointer;
       transition: opacity 0.15s, transform 0.1s;
     }
+    .btn-generate:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+    .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-    button#generateBtn:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
-    button#generateBtn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    /* ── Business info card ── */
+    .biz-card {
+      background: #1a1a24;
+      border: 1px solid #2d2d3d;
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .biz-card.visible { display: block; }
+    .biz-card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .biz-card-title {
+      font-size: 14px; font-weight: 600; color: #f1f5f9;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .badge-google {
+      font-size: 11px; font-weight: 600; padding: 3px 8px;
+      border-radius: 20px; background: #14532d; color: #4ade80;
+      border: 1px solid #166534; letter-spacing: 0.03em;
+    }
+    .badge-manual {
+      font-size: 11px; font-weight: 600; padding: 3px 8px;
+      border-radius: 20px; background: #1e293b; color: #94a3b8;
+      border: 1px solid #334155; letter-spacing: 0.03em;
+    }
+    .biz-dismiss {
+      background: none; border: none; color: #475569;
+      cursor: pointer; font-size: 18px; line-height: 1;
+      padding: 2px 4px; transition: color 0.15s;
+    }
+    .biz-dismiss:hover { color: #94a3b8; }
+    .biz-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    .biz-info-item { display: flex; flex-direction: column; gap: 2px; }
+    .biz-info-label { font-size: 11px; color: #64748b; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+    .biz-info-value { font-size: 13px; color: #cbd5e1; }
+    .biz-info-value a { color: #a5b4fc; text-decoration: none; }
+    .biz-info-value a:hover { text-decoration: underline; }
+    .rating-stars { color: #f59e0b; }
 
+    /* ── Status / error messages ── */
+    .status-msg {
+      font-size: 13px; color: #94a3b8;
+      margin-top: 10px; min-height: 18px;
+    }
+    .status-msg.error { color: #f87171; }
+    .status-msg.loading { color: #a5b4fc; }
+    .status-msg.success { color: #4ade80; }
+
+    /* ── Placeholder grid ── */
+    .placeholder-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 680px) { .placeholder-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 420px) { .placeholder-grid { grid-template-columns: 1fr; } }
+
+    .placeholder-card {
+      background: #1a1a24; border: 1px dashed #2d2d3d;
+      border-radius: 12px; padding: 22px;
+      text-align: center; color: #334155; font-size: 13px;
+    }
+    .placeholder-card .icon { font-size: 26px; margin-bottom: 8px; }
+    .placeholder-card .name { font-weight: 600; color: #475569; margin-bottom: 3px; }
+
+    /* ── Tabs ── */
     .tabs {
-      display: flex;
-      gap: 4px;
+      display: flex; gap: 3px; flex-wrap: wrap;
       background: #1a1a24;
       border: 1px solid #2d2d3d;
       border-radius: 12px;
-      padding: 6px;
-      margin-bottom: 16px;
+      padding: 5px;
+      margin-bottom: 14px;
     }
-
     .tab-btn {
-      flex: 1;
-      background: none;
-      border: none;
-      color: #64748b;
-      padding: 10px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 500;
+      flex: 1; min-width: 90px;
+      background: none; border: none;
+      color: #64748b; padding: 9px 10px;
+      border-radius: 8px; cursor: pointer;
+      font-size: 12px; font-weight: 500;
       transition: all 0.15s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+      white-space: nowrap;
     }
-
     .tab-btn:hover { color: #cbd5e1; background: #252535; }
     .tab-btn.active { background: #252535; color: #f1f5f9; }
 
-    .tab-btn .status-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #334155;
+    .status-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #334155; flex-shrink: 0;
     }
-
-    .tab-btn .status-dot.loading {
-      background: #f59e0b;
-      animation: pulse 1s infinite;
-    }
-
-    .tab-btn .status-dot.done { background: #10b981; }
+    .status-dot.loading { background: #f59e0b; animation: pulse 1s infinite; }
+    .status-dot.done { background: #10b981; }
 
     @keyframes pulse {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.3; }
     }
 
+    /* ── Output card ── */
     .output-card {
       background: #1a1a24;
       border: 1px solid #2d2d3d;
       border-radius: 16px;
       overflow: hidden;
     }
-
     .output-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px;
       border-bottom: 1px solid #2d2d3d;
     }
-
-    .output-header .section-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: #94a3b8;
-    }
+    .output-header .section-title { font-size: 13px; font-weight: 600; color: #94a3b8; }
 
     .copy-btn {
-      background: #252535;
-      border: 1px solid #2d2d3d;
-      color: #94a3b8;
-      border-radius: 6px;
-      padding: 6px 12px;
-      font-size: 12px;
-      cursor: pointer;
-      transition: all 0.15s;
+      background: #252535; border: 1px solid #2d2d3d;
+      color: #94a3b8; border-radius: 6px;
+      padding: 5px 12px; font-size: 12px;
+      cursor: pointer; transition: all 0.15s;
     }
-
     .copy-btn:hover { background: #2d2d3d; color: #f1f5f9; }
     .copy-btn.copied { color: #10b981; border-color: #10b981; }
 
     .output-body {
-      padding: 24px;
-      font-size: 14px;
-      line-height: 1.75;
-      color: #cbd5e1;
-      min-height: 200px;
-      white-space: pre-wrap;
-      font-family: inherit;
+      padding: 24px; font-size: 14px; line-height: 1.75;
+      color: #cbd5e1; min-height: 200px;
+      white-space: pre-wrap; font-family: inherit;
     }
-
     .output-body.empty {
-      color: #334155;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-style: italic;
+      color: #334155; display: flex; align-items: center;
+      justify-content: center; font-style: italic;
     }
-
-    /* Markdown-like rendering */
     .output-body strong { color: #f1f5f9; font-weight: 600; }
-    .output-body .md-h1 { font-size: 18px; font-weight: 700; color: #f1f5f9; margin: 16px 0 8px; }
-    .output-body .md-h2 { font-size: 15px; font-weight: 600; color: #a5b4fc; margin: 14px 0 6px; }
-    .output-body .md-h3 { font-size: 14px; font-weight: 600; color: #c4b5fd; margin: 12px 0 4px; }
-    .output-body .md-bullet { padding-left: 16px; }
-
-    .placeholder-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    @media (max-width: 600px) {
-      .placeholder-grid { grid-template-columns: 1fr; }
-    }
-
-    .placeholder-card {
-      background: #1a1a24;
-      border: 1px dashed #2d2d3d;
-      border-radius: 12px;
-      padding: 24px;
-      text-align: center;
-      color: #334155;
-      font-size: 13px;
-    }
-
-    .placeholder-card .icon { font-size: 28px; margin-bottom: 8px; }
-    .placeholder-card .name { font-weight: 600; color: #475569; margin-bottom: 4px; }
+    .output-body .md-h1 { font-size: 17px; font-weight: 700; color: #f1f5f9; margin: 16px 0 8px; }
+    .output-body .md-h2 { font-size: 14px; font-weight: 600; color: #a5b4fc; margin: 14px 0 5px; }
+    .output-body .md-h3 { font-size: 13px; font-weight: 600; color: #c4b5fd; margin: 10px 0 3px; }
+    .output-body .md-bullet { padding-left: 14px; }
 
     #results { display: none; }
   </style>
@@ -267,19 +263,40 @@
 
 <div class="container">
 
+  <!-- Input card -->
   <div class="input-card">
-    <h2>Generate Content Package</h2>
+    <h2>Business Info</h2>
     <div class="input-row">
       <div class="field">
+        <label>Business Name</label>
+        <input type="text" id="businessName" placeholder="Joe's Dental Clinic" />
+      </div>
+      <div class="field">
         <label>Business Type</label>
-        <input type="text" id="businessType" placeholder="e.g. dental clinic, HVAC company, law firm" />
+        <input type="text" id="businessType" placeholder="dental clinic" />
       </div>
       <div class="field">
         <label>Location</label>
-        <input type="text" id="location" placeholder="e.g. Austin, TX" />
+        <input type="text" id="location" placeholder="Detroit, MI" />
       </div>
     </div>
-    <button id="generateBtn" onclick="generate()">Generate Outreach Package</button>
+    <div class="btn-row">
+      <button class="btn-lookup" id="lookupBtn" onclick="findBusinessInfo()">Find Business Info</button>
+      <button class="btn-generate" id="generateBtn" onclick="generate()">Generate Content Package</button>
+    </div>
+    <div class="status-msg" id="statusMsg"></div>
+  </div>
+
+  <!-- Business info card (shown after Google lookup) -->
+  <div class="biz-card" id="bizCard">
+    <div class="biz-card-header">
+      <div class="biz-card-title">
+        <span id="bizCardName">Business Found</span>
+        <span id="bizBadge" class="badge-google">Google</span>
+      </div>
+      <button class="biz-dismiss" onclick="dismissBizCard()" title="Dismiss">×</button>
+    </div>
+    <div class="biz-info-grid" id="bizInfoGrid"></div>
   </div>
 
   <!-- Placeholder state -->
@@ -310,6 +327,11 @@
         <div class="name">Welcome Package</div>
         <div>Post-close onboarding email</div>
       </div>
+      <div class="placeholder-card">
+        <div class="icon">🎯</div>
+        <div class="name">Lead Gen Plan</div>
+        <div>Find & close more clients</div>
+      </div>
     </div>
   </div>
 
@@ -317,26 +339,29 @@
   <div id="results">
     <div class="tabs">
       <button class="tab-btn active" data-section="retell" onclick="switchTab('retell')">
-        <span class="status-dot" id="dot-retell"></span> 🤖 Retell AI
+        <span class="status-dot" id="dot-retell"></span>🤖 Retell AI
       </button>
       <button class="tab-btn" data-section="website" onclick="switchTab('website')">
-        <span class="status-dot" id="dot-website"></span> 🌐 Website
+        <span class="status-dot" id="dot-website"></span>🌐 Website
       </button>
       <button class="tab-btn" data-section="coldcall" onclick="switchTab('coldcall')">
-        <span class="status-dot" id="dot-coldcall"></span> 📞 Cold Call
+        <span class="status-dot" id="dot-coldcall"></span>📞 Cold Call
       </button>
       <button class="tab-btn" data-section="sms" onclick="switchTab('sms')">
-        <span class="status-dot" id="dot-sms"></span> 💬 SMS
+        <span class="status-dot" id="dot-sms"></span>💬 SMS
       </button>
       <button class="tab-btn" data-section="welcome" onclick="switchTab('welcome')">
-        <span class="status-dot" id="dot-welcome"></span> 🎉 Welcome
+        <span class="status-dot" id="dot-welcome"></span>🎉 Welcome
+      </button>
+      <button class="tab-btn" data-section="leadgen" onclick="switchTab('leadgen')">
+        <span class="status-dot" id="dot-leadgen"></span>🎯 Lead Gen
       </button>
     </div>
 
     <div class="output-card">
       <div class="output-header">
         <span class="section-title" id="activeLabel">Retell AI Receptionist Prompt</span>
-        <button class="copy-btn" onclick="copyActive()">Copy</button>
+        <button class="copy-btn" id="copyBtn" onclick="copyActive()">Copy</button>
       </div>
       <div class="output-body" id="outputBody"></div>
     </div>
@@ -345,24 +370,38 @@
 </div>
 
 <script>
-  const sections = ['retell', 'website', 'coldcall', 'sms', 'welcome'];
-  const sectionLabels = {
-    retell: 'Retell AI Receptionist Prompt',
-    website: 'Website Outline',
+  const SECTIONS = ['retell', 'website', 'coldcall', 'sms', 'welcome', 'leadgen'];
+  const SECTION_LABELS = {
+    retell:   'Retell AI Receptionist Prompt',
+    website:  'Website Outline',
     coldcall: 'Cold Call Script',
-    sms: 'SMS Follow-Up Sequence',
-    welcome: 'Client Welcome Package'
+    sms:      'SMS Follow-Up Sequence',
+    welcome:  'Client Welcome Package',
+    leadgen:  'Lead Generation Plan',
   };
 
-  const content = { retell: '', website: '', coldcall: '', sms: '', welcome: '' };
+  const content = Object.fromEntries(SECTIONS.map(s => [s, '']));
   let activeSection = 'retell';
+  let businessInfo = null;
 
+  // ── Tab switching ──────────────────────────────────────────────
   function switchTab(section) {
     activeSection = section;
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelector(`[data-section="${section}"]`).classList.add('active');
-    document.getElementById('activeLabel').textContent = sectionLabels[section];
+    document.getElementById('activeLabel').textContent = SECTION_LABELS[section];
     renderOutput();
+  }
+
+  // ── Markdown renderer ──────────────────────────────────────────
+  function renderMarkdown(text) {
+    return text
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/^### (.+)$/gm, '<span class="md-h3">$1</span>')
+      .replace(/^## (.+)$/gm, '<span class="md-h2">$1</span>')
+      .replace(/^# (.+)$/gm, '<span class="md-h1">$1</span>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/^[-*] (.+)$/gm, '<span class="md-bullet">• $1</span>');
   }
 
   function renderOutput() {
@@ -377,44 +416,124 @@
     }
   }
 
-  function renderMarkdown(text) {
-    return text
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/^### (.+)$/gm, '<span class="md-h3">$1</span>')
-      .replace(/^## (.+)$/gm, '<span class="md-h2">$1</span>')
-      .replace(/^# (.+)$/gm, '<span class="md-h1">$1</span>')
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/^[-*] (.+)$/gm, '<span class="md-bullet">• $1</span>');
-  }
-
-  async function generate() {
-    const businessType = document.getElementById('businessType').value.trim();
+  // ── Google Places lookup ───────────────────────────────────────
+  async function findBusinessInfo() {
+    const name     = document.getElementById('businessName').value.trim();
     const location = document.getElementById('location').value.trim();
 
-    if (!businessType || !location) {
-      alert('Please enter both a business type and location.');
+    if (!name || !location) {
+      setStatus('Enter a business name and location first.', 'error');
       return;
     }
 
-    // Reset
-    sections.forEach(s => {
+    setStatus('Searching Google for business info...', 'loading');
+    setLookupLoading(true);
+
+    try {
+      const resp = await fetch(`/api/business-info?name=${encodeURIComponent(name)}&location=${encodeURIComponent(location)}`);
+      const data = await resp.json();
+
+      if (!resp.ok) {
+        setStatus(data.error || 'Business not found on Google. You can still generate using manual inputs.', 'error');
+        setLookupLoading(false);
+        return;
+      }
+
+      businessInfo = data.info;
+      showBizCard(data.info, true);
+      setStatus('Google business info loaded and will be used in all generated content.', 'success');
+    } catch (err) {
+      setStatus('Could not reach the server. You can still generate using manual inputs.', 'error');
+    }
+
+    setLookupLoading(false);
+  }
+
+  function showBizCard(info, fromGoogle) {
+    document.getElementById('bizCardName').textContent = info.name || 'Business Found';
+    const badge = document.getElementById('bizBadge');
+    badge.textContent = fromGoogle ? 'Google' : 'Manual';
+    badge.className = fromGoogle ? 'badge-google' : 'badge-manual';
+
+    const grid = document.getElementById('bizInfoGrid');
+    grid.innerHTML = '';
+
+    const fields = [
+      { label: 'Name',     value: info.name },
+      { label: 'Address',  value: info.address },
+      { label: 'Phone',    value: info.phone },
+      { label: 'Website',  value: info.website, link: true },
+      { label: 'Rating',   value: info.rating ? `${info.rating} ★ (${info.reviewCount} reviews)` : null, star: true },
+      { label: 'Category', value: info.category },
+    ];
+
+    fields.forEach(({ label, value, link, star }) => {
+      if (!value) return;
+      const item = document.createElement('div');
+      item.className = 'biz-info-item';
+      const l = document.createElement('div');
+      l.className = 'biz-info-label';
+      l.textContent = label;
+      const v = document.createElement('div');
+      v.className = 'biz-info-value';
+      if (star) v.classList.add('rating-stars');
+      if (link) {
+        const a = document.createElement('a');
+        a.href = value; a.target = '_blank'; a.rel = 'noopener';
+        a.textContent = value.replace(/^https?:\/\//, '');
+        v.appendChild(a);
+      } else {
+        v.textContent = value;
+      }
+      item.appendChild(l);
+      item.appendChild(v);
+      grid.appendChild(item);
+    });
+
+    document.getElementById('bizCard').classList.add('visible');
+  }
+
+  function dismissBizCard() {
+    document.getElementById('bizCard').classList.remove('visible');
+    businessInfo = null;
+    setStatus('Google data cleared. Generation will use manual inputs.', '');
+  }
+
+  // ── Generate ───────────────────────────────────────────────────
+  async function generate() {
+    const businessName = document.getElementById('businessName').value.trim();
+    const businessType = document.getElementById('businessType').value.trim();
+    const location     = document.getElementById('location').value.trim();
+
+    if (!businessType || !location) {
+      setStatus('Business type and location are required.', 'error');
+      return;
+    }
+
+    SECTIONS.forEach(s => {
       content[s] = '';
       document.getElementById(`dot-${s}`).className = 'status-dot';
     });
 
     document.getElementById('placeholder').style.display = 'none';
     document.getElementById('results').style.display = 'block';
-    document.getElementById('generateBtn').disabled = true;
-    document.getElementById('generateBtn').textContent = 'Generating...';
-
+    setGenerateLoading(true);
+    setStatus('Generating content...', 'loading');
     switchTab('retell');
 
     try {
       const resp = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ businessType, location })
+        body: JSON.stringify({ businessName, businessType, location, businessInfo })
       });
+
+      if (!resp.ok) {
+        const err = await resp.json();
+        setStatus(err.error || 'Generation failed. Check your API key and try again.', 'error');
+        setGenerateLoading(false);
+        return;
+      }
 
       const reader = resp.body.getReader();
       const decoder = new TextDecoder();
@@ -423,59 +542,68 @@
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-
         buffer += decoder.decode(value, { stream: true });
         const lines = buffer.split('\n');
         buffer = lines.pop();
-
         for (const line of lines) {
           if (!line.startsWith('data: ')) continue;
-          try {
-            const event = JSON.parse(line.slice(6));
-            handleEvent(event);
-          } catch {}
+          try { handleEvent(JSON.parse(line.slice(6))); } catch {}
         }
       }
+
+      setStatus('All content generated.', 'success');
     } catch (err) {
-      alert('Error: ' + err.message);
+      setStatus('Connection error: ' + err.message, 'error');
     }
 
-    document.getElementById('generateBtn').disabled = false;
-    document.getElementById('generateBtn').textContent = 'Generate Outreach Package';
+    setGenerateLoading(false);
   }
 
   function handleEvent(event) {
     if (event.type === 'section_start') {
       document.getElementById(`dot-${event.section}`).className = 'status-dot loading';
       if (activeSection === event.section) renderOutput();
-    }
-    else if (event.type === 'token') {
+    } else if (event.type === 'token') {
       content[event.section] += event.text;
       if (activeSection === event.section) renderOutput();
-    }
-    else if (event.type === 'section_end') {
+    } else if (event.type === 'section_end') {
       document.getElementById(`dot-${event.section}`).className = 'status-dot done';
-    }
-    else if (event.type === 'error') {
-      alert('Generation error: ' + event.message);
+    } else if (event.type === 'error') {
+      setStatus('Generation error: ' + event.message, 'error');
     }
   }
 
+  // ── Copy ───────────────────────────────────────────────────────
   function copyActive() {
     const text = content[activeSection];
     if (!text) return;
     navigator.clipboard.writeText(text).then(() => {
-      const btn = document.querySelector('.copy-btn');
+      const btn = document.getElementById('copyBtn');
       btn.textContent = 'Copied!';
       btn.classList.add('copied');
-      setTimeout(() => {
-        btn.textContent = 'Copy';
-        btn.classList.remove('copied');
-      }, 2000);
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
   }
 
-  // Allow Enter key to trigger generation
+  // ── Helpers ────────────────────────────────────────────────────
+  function setStatus(msg, type) {
+    const el = document.getElementById('statusMsg');
+    el.textContent = msg;
+    el.className = 'status-msg' + (type ? ` ${type}` : '');
+  }
+
+  function setLookupLoading(on) {
+    const btn = document.getElementById('lookupBtn');
+    btn.disabled = on;
+    btn.textContent = on ? 'Searching...' : 'Find Business Info';
+  }
+
+  function setGenerateLoading(on) {
+    const btn = document.getElementById('generateBtn');
+    btn.disabled = on;
+    btn.textContent = on ? 'Generating...' : 'Generate Content Package';
+  }
+
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !document.getElementById('generateBtn').disabled) generate();
   });
