@@ -32,6 +32,7 @@ function buildBizContext(biz) {
   if (biz.address)     lines.push(`Address: ${biz.address}`);
   if (biz.phone)       lines.push(`Phone: ${biz.phone}`);
   if (biz.website)     lines.push(`Website: ${biz.website}`);
+  else                 lines.push(`Website: NONE — they have no website`);
   if (biz.rating)      lines.push(`Google Rating: ${biz.rating}/5 (${biz.reviewCount} reviews)`);
   if (biz.hours && biz.hours.length)
     lines.push(`Hours:\n${biz.hours.map(h => `  ${h}`).join('\n')}`);
@@ -39,7 +40,232 @@ function buildBizContext(biz) {
   return lines.join('\n');
 }
 
+// Per-section token budgets
+const SECTION_TOKENS = {
+  painpoints: 1200,
+  outreach:   2200,
+  offer:      1400,
+  demo:       1600,
+  objections: 1600,
+  retell:     1200,
+  website:    1400,
+  coldcall:   1200,
+  sms:        1200,
+  welcome:    1200,
+  leadgen:    1600,
+};
+
 const PROMPTS = {
+
+  // ── Sales Pack ────────────────────────────────────────────────────
+
+  painpoints: (biz) => {
+    const ctx = buildBizContext(biz);
+    return `You are an expert at identifying pain points for local businesses that AI receptionist and website services can solve.
+
+Business:
+${ctx}
+
+Identify the most likely pain points for ${biz.name} based on the data above. Be specific to their situation — not generic.
+
+## Most Likely Pain Points for ${biz.name}
+
+For each pain point use this format:
+**[Pain Point Name]**
+Situation: [why this is a real problem for a ${biz.type}]
+Signal: [what in the available data hints at this]
+Fix: [exactly how AI receptionist or website solves it]
+
+Address the most relevant of:
+- Missed calls (especially after-hours or during peak times)
+- No 24/7 availability
+- After-hours call handling${biz.hours ? ' (reference their hours above)' : ''}
+- No online booking or appointment scheduling
+- Slow lead follow-up
+- Repetitive FAQ calls eating up staff time
+- No website / weak web presence${!biz.website ? ' — CONFIRMED: no website found' : ''}
+- Reviews mentioning phone, wait time, or communication${biz.rating && biz.rating < 4.2 ? ` (${biz.rating}★ suggests possible friction)` : ''}
+
+## Top 3 Quick Wins
+Specific fast fixes for ${biz.name} that would show results within the first 30 days.
+
+## Best First Pitch Angle
+One punchy sentence — the single strongest hook for ${biz.name} specifically.`;
+  },
+
+  outreach: (biz) => {
+    const ctx = buildBizContext(biz);
+    return `You are a top sales copywriter specializing in AI services for local businesses.
+
+Prospect:
+${ctx}
+
+Write a complete personalized outreach bundle for selling AI receptionist${!biz.website ? ' and website' : ''} services to ${biz.name}. Every piece must reference ${biz.name} by name and feel genuinely written for them — not a template.
+
+## 1. Cold DM (Instagram / Facebook)
+Under 3 sentences. Casual, no fluff. Reference something specific about ${biz.name} or their situation.
+
+## 2. Cold Email
+**Subject:** [write a compelling subject line — not generic]
+
+[4-5 sentence body. Open with something specific to ${biz.name}. Explain the benefit in their terms. End with a soft CTA.]
+
+## 3. 30-Second Cold Call Script
+[Stage directions in brackets. Include opening, hook, value, and ask. Say ${biz.name} by name.]
+
+## 4. Voicemail Script (20 seconds)
+[For when they don't pick up. Clear, specific, leaves curiosity. Under 40 words.]
+
+## 5. Follow-Up 1 — Day 2
+[Short SMS or email. New angle — not just "checking in." Under 3 sentences.]
+
+## 6. Follow-Up 2 — Day 5
+[Final attempt. Add urgency or a strong value statement. Under 3 sentences.]
+
+## 7. "I Made This For You" Message
+[Send this after building a sample demo or mock-up for ${biz.name}. Excited tone, shows real effort, clear CTA to review it.]`;
+  },
+
+  offer: (biz) => {
+    const ctx = buildBizContext(biz);
+    return `You are an expert at packaging and pricing AI receptionist and website services for local businesses.
+
+Prospect:
+${ctx}
+
+Build a specific, compelling service offer for ${biz.name}. Make the pricing feel justified and ROI feel obvious.
+
+## Package for ${biz.name}
+
+### Services Included
+List each service with a one-line description of the specific benefit for ${biz.name}:
+${!biz.website ? '- **Website Build** — they currently have no website; build from scratch with booking and SEO\n' : '- **Website Upgrade** — improve their existing site with booking and AI chat widget\n'}- **AI Receptionist** — configured for a ${biz.type}, handles calls 24/7
+- **Call Handling Setup** — greetings, FAQs, appointment booking${biz.hours ? ', real hours built in' : ''}
+- **Missed Call Recovery** — auto-SMS to any caller who can't get through
+- **SMS Follow-Up Sequence** — re-engage new leads automatically
+- [1 additional service relevant to ${biz.type}]
+
+### Pricing
+**Setup Fee:** $[amount]
+*Why:* [justify in 1 sentence — what the setup work actually involves]
+
+**Monthly Retainer:** $[amount]/month
+*Why:* [justify with a simple ROI statement for a ${biz.type}]
+
+**Optional Add-ons:**
+- [Add-on 1 name]: $[price]/month — [1-line benefit]
+- [Add-on 2 name]: $[price]/month — [1-line benefit]
+- [Add-on 3 name]: $[price] one-time — [1-line benefit]
+
+### ROI Justification for ${biz.name}
+3-4 bullet points showing how ${biz.name} gets their money back. Use realistic numbers for a ${biz.type}${biz.reviewCount ? ` with ${biz.reviewCount} reviews` : ''}.
+
+### Risk Reversal / Guarantee
+A guarantee that makes saying yes easy. Should feel specific to ${biz.name}, not generic.
+
+### How to Present This Offer
+2-3 sentences on how to frame and deliver this on a live sales call with ${biz.name}.`;
+  },
+
+  demo: (biz) => {
+    const ctx = buildBizContext(biz);
+    return `You are a sales trainer who specializes in live AI receptionist demos on sales calls.
+
+Business being demoed for:
+${ctx}
+
+Write a 2-minute live demo script I can run during a sales call with ${biz.name}. The demo simulates a real caller calling ${biz.name} and the AI receptionist handling it naturally. Use real business details wherever possible.
+
+**[Pre-Demo Setup — say this to the prospect]**
+[Frame what they're about to experience. 2-3 sentences. Build anticipation.]
+
+---
+**DEMO BEGINS**
+
+CALLER: [Realistic opening from a typical ${biz.type} customer]
+
+AI RECEPTIONIST: [Natural, warm greeting using "${biz.name}"${biz.hours ? ' and real hours if asked' : ''}${biz.address ? ' and real address' : ''}]
+
+CALLER: [Realistic follow-up — a question typical callers ask this type of business]
+
+AI RECEPTIONIST: [Handles it confidently using specific business info]
+
+CALLER: [Tries to book an appointment or asks about availability]
+
+AI RECEPTIONIST: [Walks through booking, collects info, confirms]
+
+CALLER: [Calls after hours OR asks about a service detail]
+
+AI RECEPTIONIST: [Handles it, offers to leave a message or send SMS, stays friendly]
+
+CALLER: [One more realistic exchange]
+
+AI RECEPTIONIST: [Closes the call warmly]
+
+**DEMO ENDS**
+---
+
+**[Post-Demo Close — say this immediately after]**
+[2-3 sentences. Land the value. Move toward next steps without being pushy.]
+
+**Key Talking Points to Hit During Demo**
+- [4 bullet points specific to ${biz.name}'s situation and pain points]`;
+  },
+
+  objections: (biz) => {
+    const ctx = buildBizContext(biz);
+    return `You are a top sales closer helping overcome objections when selling AI receptionist services.
+
+Prospect:
+${ctx}
+
+Write tight, confident, natural responses to each of the 7 objections below. Reference ${biz.name} or their specific situation where it strengthens the response. Never sound scripted.
+
+---
+## "How much does it cost?"
+[Give a confident price range. Immediately tie it to ROI for a ${biz.type}. Don't apologize for the price.]
+
+*Why this works:* [1 sentence on the psychology]
+
+---
+## "We already have a receptionist"
+[Agree, then reposition AI as a complement — not a replacement. Make the receptionist the hero.]
+
+*Why this works:* [1 sentence]
+
+---
+## "We're not interested"
+[Stay calm. Don't push. Ask one smart question to uncover the real hesitation.]
+
+*Why this works:* [1 sentence]
+
+---
+## "Can it really answer calls?"
+[Build confidence with specifics. Offer a live demo. Reference what it does for a ${biz.type}.]
+
+*Why this works:* [1 sentence]
+
+---
+## "Is it AI? Our customers might not like that"
+[Be honest. Reframe it. Explain why callers actually prefer it in many cases.]
+
+*Why this works:* [1 sentence]
+
+---
+## "Will it work with our current phone number?"
+[Explain how call forwarding works in plain language. No jargon. Reassure them nothing breaks.]
+
+*Why this works:* [1 sentence]
+
+---
+## "Can it book appointments?"
+[Confirm yes, explain how. Give a ${biz.type}-specific example of how the booking flow works.]
+
+*Why this works:* [1 sentence]`;
+  },
+
+  // ── Content Pack ──────────────────────────────────────────────────
+
   retell: (biz) => {
     const ctx = buildBizContext(biz);
     return `You are an expert at writing AI receptionist prompts for Retell AI.
@@ -197,31 +423,31 @@ Generate a practical, actionable lead generation plan to find MORE ${biz.type} b
 Describe the ideal-fit ${biz.type} prospect profile (size, review count, pain point signals, good vs. bad fit indicators).
 
 ## 2. Where to Find Them
-List 5-6 specific platforms and places to source ${biz.type} leads (Google Maps, Yelp, industry directories, Facebook groups, LinkedIn, chamber of commerce, etc.)
+List 5-6 specific platforms and places to source ${biz.type} leads.
 
 ## 3. Google / Yelp Search Terms
-List 8-10 specific search strings to use in ${biz.location} and nearby areas to surface prospects.
+List 8-10 specific search strings to use in ${biz.location} and nearby areas.
 
 ## 4. What to Look For Before Contacting
-List 5-6 buying signals to check before reaching out (e.g. many reviews but mediocre rating, no live chat, missing hours listing, high call-volume indicators, slow response time signals).
+List 5-6 buying signals to check before reaching out.
 
 ## 5. Best Outreach Angle for ${biz.type} Owners
-Explain the #1 pain point for ${biz.type} owners and frame the AI receptionist as the solution. Keep it punchy.
+The #1 pain point and how to frame the AI receptionist as the solution.
 
 ## 6. Cold DM / Email Opener
-Write a 3-4 sentence cold DM or email opener that feels personally written for a ${biz.type} in ${biz.location} — not generic.
+3-4 sentences that feel personally written for a ${biz.type} in ${biz.location}.
 
 ## 7. Cold Call Script (30-Second Version)
-Write a tight 30-second cold call script targeting ${biz.type} owners.
+Tight 30-second script targeting ${biz.type} owners.
 
 ## 8. Day-3 Follow-Up Message
-Write a short day-3 follow-up SMS or email if they haven't responded.
+Short follow-up if no response.
 
 ## 9. How to Qualify the Lead
-List 4-5 quick qualifying questions to determine if this ${biz.type} is a real fit.
+4-5 quick qualifying questions for a ${biz.type}.
 
 ## 10. Offer to Pitch
-Recommend the best offer structure for a ${biz.type} (trial period, done-for-you setup, monthly retainer range, any guarantee or risk reversal that works well for this industry).`;
+Best offer structure for a ${biz.type} — pricing range, terms, guarantee.`;
   }
 };
 
@@ -265,7 +491,10 @@ app.get('/api/business-info', async (req, res) => {
       reviewCount: d.user_ratings_total || null,
       hours:       d.opening_hours ? d.opening_hours.weekday_text : null,
       category:    d.types
-        ? d.types.filter(t => t !== 'point_of_interest' && t !== 'establishment').map(t => t.replace(/_/g, ' ')).join(', ')
+        ? d.types
+            .filter(t => t !== 'point_of_interest' && t !== 'establishment')
+            .map(t => t.replace(/_/g, ' '))
+            .join(', ')
         : null,
     };
 
@@ -275,7 +504,8 @@ app.get('/api/business-info', async (req, res) => {
   }
 });
 
-// Content generation (SSE stream)
+// Content generation — SSE stream
+// Sales pack sections stream first so users see them immediately
 app.post('/api/generate', async (req, res) => {
   const { businessName, businessType, location, businessInfo } = req.body;
 
@@ -304,14 +534,23 @@ app.post('/api/generate', async (req, res) => {
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Connection', 'keep-alive');
 
-  const sections = ['retell', 'website', 'coldcall', 'sms', 'welcome', 'leadgen'];
+  const sections = [
+    'painpoints', 'outreach', 'offer', 'demo', 'objections',
+    'retell', 'website', 'coldcall', 'sms', 'welcome', 'leadgen',
+  ];
+
   const sectionLabels = {
-    retell:   'Retell AI Receptionist Prompt',
-    website:  'Website Outline',
-    coldcall: 'Cold Call Script',
-    sms:      'SMS Follow-Up Sequence',
-    welcome:  'Client Welcome Package',
-    leadgen:  'Lead Generation Plan',
+    painpoints: 'Pain Point Finder',
+    outreach:   'Personalized Outreach Bundle',
+    offer:      'Offer Builder',
+    demo:       'Client Demo Script',
+    objections: 'Objection Handling',
+    retell:     'Retell AI Receptionist Prompt',
+    website:    'Website Outline',
+    coldcall:   'Cold Call Script',
+    sms:        'SMS Follow-Up Sequence',
+    welcome:    'Client Welcome Package',
+    leadgen:    'Lead Generation Plan',
   };
 
   const sendEvent = (data) => res.write(`data: ${JSON.stringify(data)}\n\n`);
@@ -322,7 +561,7 @@ app.post('/api/generate', async (req, res) => {
 
       const stream = await client.messages.stream({
         model: 'claude-sonnet-4-6',
-        max_tokens: 1500,
+        max_tokens: SECTION_TOKENS[section] || 1200,
         messages: [{ role: 'user', content: PROMPTS[section](biz) }]
       });
 
