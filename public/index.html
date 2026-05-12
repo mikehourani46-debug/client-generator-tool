@@ -366,6 +366,155 @@
 
     /* ── HIDDEN ── */
     [hidden] { display: none !important; }
+
+    /* ── LEAD FINDER ─────────────────────────────────────────────────────── */
+    .search-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 680px) { .search-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 440px) { .search-grid { grid-template-columns: 1fr; } }
+
+    /* Provider badge */
+    .provider-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11px; font-weight: 600; padding: 3px 9px;
+      border-radius: 20px; border: 1px solid;
+      margin-left: auto; flex-shrink: 0;
+    }
+    .provider-badge.mock {
+      background: rgba(245,158,11,0.1); color: var(--amber);
+      border-color: rgba(245,158,11,0.3);
+    }
+    .provider-badge.live {
+      background: rgba(16,185,129,0.1); color: var(--green);
+      border-color: rgba(16,185,129,0.3);
+    }
+
+    /* Demo data banner */
+    .demo-banner {
+      background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2);
+      border-radius: 8px; padding: 10px 14px;
+      font-size: 12px; color: var(--amber); line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    /* Filter/sort bar */
+    .filter-bar {
+      display: flex; align-items: center; gap: 6px;
+      flex-wrap: wrap; margin: 20px 0 16px;
+    }
+    .filter-btn {
+      padding: 6px 13px; border-radius: 20px; border: 1px solid var(--border-light);
+      background: none; color: var(--text-muted); font-size: 12px; font-weight: 500;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .filter-btn:hover { color: var(--text); background: var(--border); }
+    .filter-btn.active {
+      background: var(--accent-glow); color: var(--accent);
+      border-color: rgba(99,102,241,0.35);
+    }
+    .result-count {
+      margin-left: auto; font-size: 12px; color: var(--text-muted);
+    }
+
+    /* Lead cards */
+    .lead-card {
+      display: flex; align-items: flex-start; gap: 16px;
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px; margin-bottom: 10px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .lead-card:hover {
+      border-color: var(--border-light);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .lead-card.selected {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent), 0 4px 20px rgba(99,102,241,0.15);
+    }
+
+    /* Score badge */
+    .score-badge {
+      width: 48px; height: 48px; border-radius: 10px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 17px; color: #fff; flex-shrink: 0;
+      line-height: 1;
+    }
+    .score-badge small {
+      font-size: 8px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.05em; opacity: 0.85; margin-top: 2px;
+    }
+
+    /* Lead body */
+    .lead-body { flex: 1; min-width: 0; }
+    .lead-top {
+      display: flex; align-items: center; gap: 8px;
+      flex-wrap: wrap; margin-bottom: 5px;
+    }
+    .lead-name {
+      font-size: 15px; font-weight: 700; color: var(--text); flex: 1; min-width: 0;
+    }
+
+    .ws-badge {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; padding: 2px 8px; border-radius: 20px; flex-shrink: 0;
+    }
+    .ws-badge.none   { background: rgba(239,68,68,0.12); color: #ef4444; border: 1px solid rgba(239,68,68,0.25); }
+    .ws-badge.weak   { background: rgba(245,158,11,0.12); color: #f59e0b; border: 1px solid rgba(245,158,11,0.25); }
+    .ws-badge.decent { background: rgba(99,102,241,0.1); color: #818cf8; border: 1px solid rgba(99,102,241,0.2); }
+    .ws-badge.strong { background: rgba(16,185,129,0.1); color: #10b981; border: 1px solid rgba(16,185,129,0.2); }
+
+    .lead-stars { color: #f59e0b; font-size: 12px; }
+    .lead-meta {
+      font-size: 12px; color: var(--text-muted);
+      display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+      margin-bottom: 6px;
+    }
+    .lead-meta-sep { color: var(--border-light); }
+    .lead-detail {
+      font-size: 12px; color: var(--text-muted); line-height: 1.6;
+    }
+    .lead-detail a { color: var(--accent); text-decoration: none; }
+    .lead-detail a:hover { text-decoration: underline; }
+
+    /* Lead actions */
+    .lead-actions {
+      display: flex; flex-direction: column; gap: 6px; flex-shrink: 0;
+    }
+    .lead-actions .btn { font-size: 12px; padding: 7px 13px; white-space: nowrap; }
+
+    @media (max-width: 580px) {
+      .lead-card { flex-direction: column; }
+      .lead-actions { flex-direction: row; flex-wrap: wrap; }
+    }
+
+    /* Review snippets expandable */
+    .review-snippets {
+      margin-top: 10px; padding-top: 10px;
+      border-top: 1px solid var(--border);
+      display: none;
+    }
+    .review-snippets.open { display: block; }
+    .review-snippet {
+      font-size: 11px; color: var(--text-muted); line-height: 1.5;
+      padding: 4px 0;
+    }
+    .toggle-reviews {
+      background: none; border: none; color: var(--text-dim);
+      font-size: 11px; cursor: pointer; padding: 0; margin-top: 6px;
+      transition: color 0.15s;
+    }
+    .toggle-reviews:hover { color: var(--text-muted); }
+
+    /* Highlight selected lead at top of step 0 */
+    .selected-lead-banner {
+      background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.25);
+      border-radius: 8px; padding: 10px 14px;
+      font-size: 12px; color: #a5b4fc; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
   </style>
 </head>
 <body>
@@ -441,6 +590,93 @@
 ════════════════════════════════════════════════════════════════════════════ -->
 <div id="growth-mode">
 <div class="container">
+
+  <!-- ── STEP 0: FIND LEADS ────────────────────────────────────────────── -->
+  <div class="card" id="g-step0">
+    <div class="step-header">
+      <div class="step-num active" id="snum-0" style="background:var(--accent);color:#fff">0</div>
+      <div>
+        <div class="step-title">Find Leads</div>
+        <div class="step-subtitle">Search for local businesses with no or weak websites</div>
+      </div>
+      <span class="provider-badge mock" id="providerBadge" title="Using demo data. Set LEAD_PROVIDER in .env to switch to a real API.">
+        ⚠ Demo Data
+      </span>
+    </div>
+
+    <!-- Search form -->
+    <div class="search-grid">
+      <div>
+        <label>City *</label>
+        <input type="text" id="s-city" placeholder="e.g. Dearborn, MI" />
+      </div>
+      <div>
+        <label>Industry *</label>
+        <select id="s-industry">
+          <option value="">Select industry...</option>
+          <option>Barbershop</option>
+          <option>Medspa</option>
+          <option>Restaurant</option>
+          <option>Auto Shop</option>
+          <option>Dentist</option>
+          <option>Landscaping</option>
+          <option>Roofing</option>
+          <option>Gym</option>
+          <option>Salon</option>
+          <option>Clinic</option>
+          <option>Law Firm</option>
+          <option>Plumber</option>
+          <option>HVAC</option>
+        </select>
+      </div>
+      <div>
+        <label>Website Filter</label>
+        <select id="s-websiteStatus">
+          <option value="none_or_weak" selected>No or Weak Website</option>
+          <option value="none">No Website Only</option>
+          <option value="weak">Weak Website Only</option>
+          <option value="any">Any (all results)</option>
+        </select>
+      </div>
+      <div>
+        <label>Min Rating</label>
+        <input type="number" id="s-minRating" min="1" max="5" step="0.1" value="4.3" />
+      </div>
+      <div>
+        <label>Min Reviews</label>
+        <input type="number" id="s-minReviews" min="0" step="1" value="50" />
+      </div>
+      <div>
+        <label>Lead Count (max 25)</label>
+        <input type="number" id="s-count" min="1" max="25" value="12" />
+      </div>
+    </div>
+
+    <div style="margin-top:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <button class="btn btn-primary" id="findLeadsBtn" onclick="findLeads()">🔍 Find Leads</button>
+      <span style="font-size:12px;color:var(--text-muted)" id="s-statusMsg"></span>
+    </div>
+
+    <!-- Results -->
+    <div id="s-results" hidden>
+      <div class="demo-banner" id="s-demoBanner">
+        ⚠ <strong>Demo Mode</strong> — results below are generated sample data so you can test the full pipeline.
+        Connect <strong>Google Places API</strong>, <strong>SerpAPI</strong>, or <strong>Outscraper</strong> via the
+        <code>LEAD_PROVIDER</code> env var for real leads.
+      </div>
+
+      <!-- Filter bar -->
+      <div class="filter-bar">
+        <button class="filter-btn active" id="f-all"    onclick="filterLeads('all')">All</button>
+        <button class="filter-btn"        id="f-best"   onclick="filterLeads('best')">Best Prospects 75+</button>
+        <button class="filter-btn"        id="f-nosite" onclick="filterLeads('nosite')">No Website</button>
+        <button class="filter-btn"        id="f-weak"   onclick="filterLeads('weak')">Weak Website</button>
+        <span class="result-count" id="s-resultCount"></span>
+      </div>
+
+      <div id="s-leadCards"></div>
+    </div>
+  </div>
 
   <!-- ── STEP 1: BUSINESS INFO ──────────────────────────────────────────── -->
   <div class="card" id="g-step1">
@@ -1090,6 +1326,247 @@ function copyText(btn, text) {
     btn.classList.add('copied');
     setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
   });
+}
+
+// ── STEP 0: FIND LEADS ────────────────────────────────────────────────────────
+
+state.searchResults = [];
+state.activeFilter  = 'all';
+state.selectedLeadIdx = null;
+
+async function findLeads() {
+  const city     = document.getElementById('s-city').value.trim();
+  const industry = document.getElementById('s-industry').value;
+  if (!city || !industry) { alert('Please enter a city and select an industry.'); return; }
+
+  const btn = document.getElementById('findLeadsBtn');
+  btn.disabled = true;
+  btn.textContent = 'Searching...';
+  document.getElementById('s-statusMsg').textContent = '';
+
+  try {
+    const resp = await fetch('/api/leads/search', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        city,
+        industry,
+        minRating:     parseFloat(document.getElementById('s-minRating').value)  || 1,
+        minReviews:    parseInt(document.getElementById('s-minReviews').value)    || 0,
+        websiteStatus: document.getElementById('s-websiteStatus').value,
+        count:         parseInt(document.getElementById('s-count').value)         || 12,
+      })
+    });
+
+    const data = await resp.json();
+    if (!data.success) throw new Error(data.error || 'Search failed');
+
+    state.searchResults = data.leads;
+
+    // Update provider badge
+    const badge = document.getElementById('providerBadge');
+    if (data.provider === 'mock') {
+      badge.className = 'provider-badge mock';
+      badge.textContent = '⚠ Demo Data';
+      document.getElementById('s-demoBanner').hidden = false;
+    } else {
+      badge.className = 'provider-badge live';
+      badge.textContent = '✓ Live Data';
+      document.getElementById('s-demoBanner').hidden = true;
+    }
+
+    document.getElementById('s-results').hidden = false;
+    document.getElementById('s-statusMsg').textContent =
+      `Found ${data.leads.length} lead${data.leads.length !== 1 ? 's' : ''} in ${city}`;
+
+    setActiveFilter('all');
+    renderLeads();
+
+  } catch (err) {
+    alert('Search error: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🔍 Find Leads';
+  }
+}
+
+function filterLeads(f) {
+  setActiveFilter(f);
+  renderLeads();
+}
+
+function setActiveFilter(f) {
+  state.activeFilter = f;
+  ['all', 'best', 'nosite', 'weak'].forEach(id => {
+    document.getElementById('f-' + id).classList.toggle('active', id === f);
+  });
+}
+
+function getFilteredLeads() {
+  const all = state.searchResults;
+  switch (state.activeFilter) {
+    case 'best':   return all.filter(l => l.score >= 75);
+    case 'nosite': return all.filter(l => l.websiteStatus === 'none');
+    case 'weak':   return all.filter(l => l.websiteStatus === 'weak');
+    default:       return all;
+  }
+}
+
+function renderLeads() {
+  const leads = getFilteredLeads();
+  document.getElementById('s-resultCount').textContent = `Showing ${leads.length} lead${leads.length !== 1 ? 's' : ''}`;
+
+  const container = document.getElementById('s-leadCards');
+
+  if (leads.length === 0) {
+    container.innerHTML = `<div style="text-align:center;padding:32px;color:var(--text-dim);font-size:13px">
+      No leads match this filter. Try changing the filter or search parameters.
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = leads.map((lead, i) => {
+    const origIdx = state.searchResults.indexOf(lead);
+    const { color, label } = lead.scoreLabel || { color: '#64748b', label: 'N/A' };
+    const isSelected = origIdx === state.selectedLeadIdx;
+
+    const wsBadge = {
+      none:   '<span class="ws-badge none">No Website</span>',
+      weak:   '<span class="ws-badge weak">Weak Website</span>',
+      decent: '<span class="ws-badge decent">Decent Site</span>',
+      strong: '<span class="ws-badge strong">Strong Site</span>',
+    }[lead.websiteStatus] || '';
+
+    const stars = '★'.repeat(Math.round(lead.rating)) + '☆'.repeat(5 - Math.round(lead.rating));
+
+    const emailHtml = lead.email
+      ? `<span>📧 <a href="mailto:${lead.email}">${lead.email}</a></span>`
+      : `<span style="color:var(--text-dim)">📧 No email found</span>`;
+
+    const socialHtml = (lead.socialLinks || []).map(s =>
+      `<a href="${s.url}" target="_blank">${s.platform === 'Facebook' ? '📘' : '📸'} ${s.platform}</a>`
+    ).join(' · ');
+
+    const websiteBtn = lead.websiteUrl
+      ? `<a href="${lead.websiteUrl}" target="_blank" class="btn btn-outline btn-sm">🌐 Visit Site</a>`
+      : `<span class="btn btn-outline btn-sm" style="opacity:0.35;cursor:default">🌐 No Site</span>`;
+
+    const reviewsHtml = (lead.reviews || []).slice(0, 5).map(r =>
+      `<div class="review-snippet">${r}</div>`
+    ).join('');
+
+    return `
+    <div class="lead-card${isSelected ? ' selected' : ''}" id="lc-${origIdx}">
+      <div class="score-badge" style="background:${color}">
+        ${lead.score}
+        <small>${label}</small>
+      </div>
+
+      <div class="lead-body">
+        <div class="lead-top">
+          <div class="lead-name">${lead.name}</div>
+          <span class="tag">${lead.industry}</span>
+          ${wsBadge}
+        </div>
+
+        <div class="lead-meta">
+          <span class="lead-stars">${stars}</span>
+          <span>${lead.rating}</span>
+          <span class="lead-meta-sep">·</span>
+          <span>${lead.reviewCount} reviews</span>
+          <span class="lead-meta-sep">·</span>
+          <span>${lead.city}</span>
+        </div>
+
+        <div class="lead-detail">
+          <div>📍 ${lead.address}</div>
+          <div style="margin-top:3px">
+            ${lead.phone ? `<span>📞 <a href="tel:${lead.phone}">${lead.phone}</a></span>` : '<span style="color:var(--text-dim)">📞 No phone listed</span>'}
+            &nbsp;·&nbsp;
+            ${emailHtml}
+          </div>
+          ${socialHtml ? `<div style="margin-top:3px">${socialHtml}</div>` : ''}
+        </div>
+
+        ${reviewsHtml ? `
+        <button class="toggle-reviews" onclick="toggleReviews(${origIdx})">▸ Show review snippets</button>
+        <div class="review-snippets" id="rv-${origIdx}">${reviewsHtml}</div>
+        ` : ''}
+      </div>
+
+      <div class="lead-actions">
+        <button class="btn btn-primary btn-sm" onclick="selectLead(${origIdx})">
+          ${isSelected ? '✓ Selected' : 'Use Lead →'}
+        </button>
+        <a href="${lead.mapsUrl}" target="_blank" class="btn btn-outline btn-sm">📍 Maps</a>
+        ${websiteBtn}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleReviews(idx) {
+  const el = document.getElementById(`rv-${idx}`);
+  const btn = el.previousElementSibling;
+  el.classList.toggle('open');
+  btn.textContent = el.classList.contains('open') ? '▾ Hide review snippets' : '▸ Show review snippets';
+}
+
+function selectLead(idx) {
+  const lead = state.searchResults[idx];
+  if (!lead) return;
+
+  state.selectedLead  = lead;
+  state.selectedLeadIdx = idx;
+
+  // Pre-fill Step 1 fields
+  const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ''; };
+  setVal('g-name',     lead.name);
+  setVal('g-city',     lead.city);
+  setVal('g-phone',    lead.phone);
+  setVal('g-address',  lead.address);
+  setVal('g-website',  lead.websiteUrl);
+  setVal('g-owner',    lead.ownerName);
+  setVal('g-rating',   lead.rating);
+  setVal('g-reviews',  lead.reviewCount);
+  // Select the industry dropdown
+  const indEl = document.getElementById('g-industry');
+  if (indEl) {
+    const opt = [...indEl.options].find(o => o.value === lead.industry);
+    if (opt) indEl.value = lead.industry;
+  }
+
+  // Pre-fill Step 2 review textarea
+  if (lead.reviews && lead.reviews.length > 0) {
+    const reviewEl = document.getElementById('g-reviewText');
+    if (reviewEl) reviewEl.value = lead.reviews.join('\n\n');
+  }
+
+  // Commit Step 1 state (bypasses manual form submission)
+  state.step1 = {
+    name:           lead.name,
+    industry:       lead.industry,
+    city:           lead.city,
+    phone:          lead.phone    || '',
+    address:        lead.address  || '',
+    owner:          lead.ownerName || '',
+    existingWebsite: lead.websiteUrl || '',
+    rating:         lead.rating,
+    reviewCount:    lead.reviewCount,
+  };
+
+  // Visual: mark Step 0 done, mark Step 1 done, unlock Step 2
+  markStepDone(0);
+  markStepDone(1);
+  unlockCard('g-step2', 2);
+
+  // Re-render lead cards to show selected state
+  renderLeads();
+
+  // Scroll to Step 2 so user can click Analyze
+  setTimeout(() => {
+    document.getElementById('g-step2').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 120);
 }
 
 // ── OUTREACH GENERATOR (existing logic) ──────────────────────────────────────

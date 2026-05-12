@@ -3,6 +3,8 @@ const express = require('express');
 const Anthropic = require('@anthropic-ai/sdk');
 const path = require('path');
 const crypto = require('crypto');
+const leadProvider = require('./providers');
+const { scoreLead, getScoreLabel } = require('./lib/leadScorer');
 
 const app = express();
 app.use(express.json({ limit: '2mb' }));
@@ -336,6 +338,37 @@ SUBJECT LINE 3:
 EMAIL 3 (send day 7):
 [second follow-up body — 1-2 sentences, soft close]`
 };
+
+// ─── LEAD FINDER ENDPOINT ────────────────────────────────────────────────────
+
+app.post('/api/leads/search', async (req, res) => {
+  const { city, industry, minRating, minReviews, websiteStatus, count } = req.body;
+
+  if (!city || !industry) {
+    return res.status(400).json({ error: 'city and industry are required' });
+  }
+
+  try {
+    const raw = await leadProvider.searchBusinesses({
+      city: city.trim(),
+      industry: industry.trim(),
+      minRating:     parseFloat(minRating)  || 1,
+      minReviews:    parseInt(minReviews)   || 0,
+      websiteStatus: websiteStatus          || 'any',
+      count:         Math.min(parseInt(count) || 10, 25),
+    });
+
+    const leads = raw.map(lead => {
+      const score = lead.score ?? scoreLead(lead);
+      return { ...lead, score, scoreLabel: getScoreLabel(score) };
+    });
+
+    const providerName = process.env.LEAD_PROVIDER || 'mock';
+    res.json({ success: true, leads, total: leads.length, provider: providerName });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // ─── EXISTING ENDPOINT ───────────────────────────────────────────────────────
 
