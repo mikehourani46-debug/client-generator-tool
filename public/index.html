@@ -3,339 +3,430 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Business Outreach Generator</title>
+  <title>Website Growth Agent</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --bg: #0a0a0f;
+      --bg-card: #13131e;
+      --bg-input: #0f0f18;
+      --border: #1e1e2e;
+      --border-light: #2a2a3d;
+      --text: #e8eaf0;
+      --text-muted: #64748b;
+      --text-dim: #3d4560;
+      --accent: #6366f1;
+      --accent-dark: #4f51d8;
+      --accent-glow: rgba(99,102,241,0.15);
+      --green: #10b981;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.4);
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #0f0f13;
-      color: #e2e8f0;
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
+      font-size: 14px;
+      line-height: 1.6;
     }
 
+    /* ── HEADER ── */
     header {
-      background: #1a1a24;
-      border-bottom: 1px solid #2d2d3d;
-      padding: 20px 32px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 60px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    header .logo {
-      width: 36px;
-      height: 36px;
+    .logo {
+      width: 32px; height: 32px;
       background: linear-gradient(135deg, #6366f1, #8b5cf6);
       border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
     }
 
-    header h1 {
-      font-size: 20px;
-      font-weight: 600;
-      color: #f1f5f9;
+    header h1 { font-size: 16px; font-weight: 700; color: var(--text); }
+    header .badge {
+      font-size: 11px; font-weight: 600;
+      background: var(--accent-glow); color: var(--accent);
+      border: 1px solid rgba(99,102,241,0.3);
+      padding: 2px 8px; border-radius: 20px;
     }
 
-    header span {
-      font-size: 13px;
-      color: #64748b;
-      margin-left: 4px;
+    /* ── MODE TOGGLE ── */
+    .mode-bar {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      display: flex; align-items: center; gap: 4px;
     }
 
-    .container {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 24px;
+    .mode-btn {
+      padding: 14px 20px;
+      background: none; border: none; border-bottom: 2px solid transparent;
+      color: var(--text-muted); font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: all 0.15s;
     }
+    .mode-btn:hover { color: var(--text); }
+    .mode-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
 
-    .input-card {
-      background: #1a1a24;
-      border: 1px solid #2d2d3d;
+    /* ── LAYOUT ── */
+    .container { max-width: 860px; margin: 0 auto; padding: 36px 24px 80px; }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 32px;
-      margin-bottom: 32px;
-    }
-
-    .input-card h2 {
-      font-size: 16px;
-      font-weight: 600;
-      color: #94a3b8;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+      padding: 28px 32px;
       margin-bottom: 20px;
     }
 
-    .input-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
+    .card-title {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-muted);
       margin-bottom: 20px;
     }
+
+    /* ── FORM ELEMENTS ── */
+    .field-grid { display: grid; gap: 14px; }
+    .field-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+    .field-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
 
     @media (max-width: 600px) {
-      .input-row { grid-template-columns: 1fr; }
+      .field-grid.cols-2, .field-grid.cols-3 { grid-template-columns: 1fr; }
     }
 
-    .field label {
-      display: block;
-      font-size: 13px;
-      font-weight: 500;
-      color: #94a3b8;
-      margin-bottom: 8px;
+    label {
+      display: block; font-size: 12px; font-weight: 500;
+      color: var(--text-muted); margin-bottom: 6px;
     }
 
-    .field input {
-      width: 100%;
-      background: #0f0f13;
-      border: 1px solid #2d2d3d;
-      border-radius: 8px;
-      padding: 12px 16px;
-      color: #f1f5f9;
-      font-size: 15px;
+    input[type=text], input[type=number], input[type=url],
+    input[type=email], select, textarea {
+      width: 100%; background: var(--bg-input); border: 1px solid var(--border-light);
+      border-radius: 8px; padding: 10px 14px; color: var(--text);
+      font-size: 14px; font-family: inherit; outline: none;
       transition: border-color 0.15s;
-      outline: none;
     }
-
-    .field input:focus {
-      border-color: #6366f1;
+    input[type=text]:focus, input[type=number]:focus, input[type=url]:focus,
+    input[type=email]:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
     }
+    input::placeholder, textarea::placeholder { color: var(--text-dim); }
+    textarea { resize: vertical; min-height: 140px; line-height: 1.6; }
+    select { -webkit-appearance: none; cursor: pointer; }
 
-    .field input::placeholder { color: #475569; }
-
-    button#generateBtn {
-      width: 100%;
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    /* ── BUTTONS ── */
+    .btn {
+      padding: 11px 22px; border-radius: 8px; border: none;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      transition: all 0.15s; display: inline-flex;
+      align-items: center; gap: 7px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #8b5cf6);
       color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 14px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: opacity 0.15s, transform 0.1s;
+    }
+    .btn-primary:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+    .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+    .btn-outline {
+      background: transparent; color: var(--text-muted);
+      border: 1px solid var(--border-light);
+    }
+    .btn-outline:hover { background: var(--border); color: var(--text); }
+    .btn-green { background: var(--green); color: #fff; }
+    .btn-green:hover { background: #0da572; }
+    .btn-full { width: 100%; justify-content: center; }
+    .btn-sm { padding: 7px 14px; font-size: 12px; }
+
+    /* ── STEP HEADER ── */
+    .step-header {
+      display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
+    }
+    .step-num {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; flex-shrink: 0;
+      background: var(--border-light); color: var(--text-muted);
+    }
+    .step-num.active { background: var(--accent); color: #fff; }
+    .step-num.done { background: var(--green); color: #fff; }
+    .step-title { font-size: 16px; font-weight: 700; color: var(--text); }
+    .step-subtitle { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+
+    .card.locked {
+      opacity: 0.45; pointer-events: none;
     }
 
-    button#generateBtn:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
-    button#generateBtn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    /* ── TAGS / BADGES ── */
+    .tag-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      background: var(--bg-input); border: 1px solid var(--border-light);
+      border-radius: 20px; padding: 4px 12px;
+      font-size: 12px; color: var(--text-muted);
+    }
+    .tag.accent { background: var(--accent-glow); border-color: rgba(99,102,241,0.3); color: var(--accent); }
 
+    /* ── ANALYSIS RESULTS ── */
+    .analysis-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+      margin-top: 20px;
+    }
+    @media (max-width: 600px) { .analysis-grid { grid-template-columns: 1fr; } }
+
+    .analysis-block {
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px;
+    }
+    .analysis-block h4 {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 10px;
+    }
+    .analysis-block .headline-text {
+      font-size: 18px; font-weight: 700; color: var(--text); line-height: 1.35;
+    }
+    .analysis-block .sub-text {
+      font-size: 13px; color: var(--text-muted); margin-top: 6px; line-height: 1.5;
+    }
+    .analysis-block.full { grid-column: 1 / -1; }
+
+    .testimonial-card {
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px 16px; margin-bottom: 10px;
+    }
+    .testimonial-card p { font-size: 13px; color: var(--text); font-style: italic; margin-bottom: 6px; }
+    .testimonial-card span { font-size: 11px; color: var(--text-muted); }
+
+    /* ── WEBSITE BUILDER ── */
+    .code-preview {
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px; color: #7dd3fc;
+      max-height: 200px; overflow: auto;
+      white-space: pre-wrap; word-break: break-all;
+      margin: 16px 0; line-height: 1.5;
+    }
+
+    .progress-bar-wrap {
+      background: var(--border); border-radius: 20px;
+      height: 4px; overflow: hidden; margin: 12px 0;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #8b5cf6);
+      width: 0%; transition: width 0.3s ease;
+      border-radius: 20px;
+    }
+
+    .website-actions {
+      display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+    }
+
+    /* ── EMAIL OUTPUT ── */
+    .email-section {
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden; margin-bottom: 14px;
+    }
+    .email-section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px; border-bottom: 1px solid var(--border);
+    }
+    .email-section-header span {
+      font-size: 12px; font-weight: 600; color: var(--text-muted);
+    }
+    .email-body {
+      padding: 16px; font-size: 13px; color: var(--text);
+      line-height: 1.75; white-space: pre-wrap; min-height: 60px;
+    }
+
+    /* ── STATUS DOT ── */
+    .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      display: inline-block; flex-shrink: 0;
+      background: var(--border-light);
+    }
+    .dot.loading { background: var(--amber); animation: pulse 1s infinite; }
+    .dot.done { background: var(--green); }
+    .dot.error { background: var(--red); }
+
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    /* ── COPY BUTTON ── */
+    .copy-btn {
+      background: var(--border); border: none; border-radius: 6px;
+      padding: 5px 10px; font-size: 11px; color: var(--text-muted);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .copy-btn:hover { background: var(--border-light); color: var(--text); }
+    .copy-btn.copied { color: var(--green); }
+
+    /* ── RATING DISPLAY ── */
+    .rating-display {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 22px; margin-bottom: 6px;
+    }
+    .star-fill { color: #f59e0b; }
+    .rating-val { font-size: 20px; font-weight: 700; }
+
+    /* ── COLOR SWATCH ── */
+    .color-swatch {
+      width: 20px; height: 20px; border-radius: 4px;
+      border: 1px solid var(--border); display: inline-block;
+      vertical-align: middle; margin-right: 6px;
+    }
+
+    /* ── OUTREACH MODE (existing) ── */
     .tabs {
-      display: flex;
-      gap: 4px;
-      background: #1a1a24;
-      border: 1px solid #2d2d3d;
-      border-radius: 12px;
-      padding: 6px;
-      margin-bottom: 16px;
+      display: flex; gap: 4px; background: var(--bg-card);
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: 6px; margin-bottom: 16px;
     }
-
     .tab-btn {
-      flex: 1;
-      background: none;
-      border: none;
-      color: #64748b;
-      padding: 10px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 500;
-      transition: all 0.15s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
+      flex: 1; background: none; border: none; color: var(--text-muted);
+      padding: 9px 10px; border-radius: 8px; cursor: pointer;
+      font-size: 12px; font-weight: 500; transition: all 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
     }
-
-    .tab-btn:hover { color: #cbd5e1; background: #252535; }
-    .tab-btn.active { background: #252535; color: #f1f5f9; }
-
-    .tab-btn .status-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #334155;
-    }
-
-    .tab-btn .status-dot.loading {
-      background: #f59e0b;
-      animation: pulse 1s infinite;
-    }
-
-    .tab-btn .status-dot.done { background: #10b981; }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
+    .tab-btn:hover { color: var(--text); background: var(--border); }
+    .tab-btn.active { background: var(--border); color: var(--text); }
 
     .output-card {
-      background: #1a1a24;
-      border: 1px solid #2d2d3d;
-      border-radius: 16px;
-      overflow: hidden;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden;
     }
-
     .output-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 20px;
-      border-bottom: 1px solid #2d2d3d;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px; border-bottom: 1px solid var(--border);
     }
-
-    .output-header .section-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: #94a3b8;
-    }
-
-    .copy-btn {
-      background: #252535;
-      border: 1px solid #2d2d3d;
-      color: #94a3b8;
-      border-radius: 6px;
-      padding: 6px 12px;
-      font-size: 12px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .copy-btn:hover { background: #2d2d3d; color: #f1f5f9; }
-    .copy-btn.copied { color: #10b981; border-color: #10b981; }
-
+    .output-header .section-title { font-size: 13px; font-weight: 600; color: var(--text-muted); }
     .output-body {
-      padding: 24px;
-      font-size: 14px;
-      line-height: 1.75;
-      color: #cbd5e1;
-      min-height: 200px;
-      white-space: pre-wrap;
-      font-family: inherit;
+      padding: 24px; font-size: 14px; line-height: 1.75;
+      color: #cbd5e1; min-height: 200px; white-space: pre-wrap;
     }
-
     .output-body.empty {
-      color: #334155;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-style: italic;
+      color: var(--text-dim); display: flex; align-items: center;
+      justify-content: center; font-style: italic;
     }
-
-    /* Markdown-like rendering */
-    .output-body strong { color: #f1f5f9; font-weight: 600; }
-    .output-body .md-h1 { font-size: 18px; font-weight: 700; color: #f1f5f9; margin: 16px 0 8px; }
+    .output-body strong { color: var(--text); font-weight: 600; }
+    .output-body .md-h1 { font-size: 18px; font-weight: 700; color: var(--text); margin: 16px 0 8px; }
     .output-body .md-h2 { font-size: 15px; font-weight: 600; color: #a5b4fc; margin: 14px 0 6px; }
     .output-body .md-h3 { font-size: 14px; font-weight: 600; color: #c4b5fd; margin: 12px 0 4px; }
     .output-body .md-bullet { padding-left: 16px; }
 
-    .placeholder-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    @media (max-width: 600px) {
-      .placeholder-grid { grid-template-columns: 1fr; }
-    }
-
+    .placeholder-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 600px) { .placeholder-grid { grid-template-columns: 1fr; } }
     .placeholder-card {
-      background: #1a1a24;
-      border: 1px dashed #2d2d3d;
-      border-radius: 12px;
-      padding: 24px;
-      text-align: center;
-      color: #334155;
-      font-size: 13px;
+      background: var(--bg-card); border: 1px dashed var(--border);
+      border-radius: 12px; padding: 24px; text-align: center;
+      color: var(--text-dim); font-size: 13px;
     }
-
     .placeholder-card .icon { font-size: 28px; margin-bottom: 8px; }
-    .placeholder-card .name { font-weight: 600; color: #475569; margin-bottom: 4px; }
+    .placeholder-card .name { font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
 
-    #results { display: none; }
+    /* ── SECTION DIVIDER ── */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+    /* ── INLINE ALERT ── */
+    .alert {
+      padding: 12px 16px; border-radius: 8px; font-size: 13px;
+      margin-bottom: 16px;
+    }
+    .alert-success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); color: var(--green); }
+    .alert-error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); color: var(--red); }
+
+    /* ── WEBSITE PREVIEW IFRAME ── */
+    #previewFrame {
+      width: 100%; height: 520px; border: none;
+      border-radius: 10px; background: #fff;
+    }
+    .preview-wrapper {
+      border: 1px solid var(--border); border-radius: 12px;
+      overflow: hidden; margin-top: 16px;
+    }
+    .preview-topbar {
+      background: var(--bg-input); padding: 10px 16px;
+      display: flex; align-items: center; gap: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .preview-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+    /* ── HIDDEN ── */
+    [hidden] { display: none !important; }
   </style>
 </head>
 <body>
 
+<!-- ─── HEADER ─────────────────────────────────────────────────────────────── -->
 <header>
-  <div class="logo">⚡</div>
-  <h1>Business Outreach Generator</h1>
-  <span>powered by Claude</span>
+  <div class="logo">🚀</div>
+  <h1>Website Growth Agent</h1>
+  <span class="badge">powered by Claude</span>
 </header>
 
+<!-- ─── MODE BAR ───────────────────────────────────────────────────────────── -->
+<div class="mode-bar">
+  <button class="mode-btn" id="mode-outreach" onclick="setMode('outreach')">⚡ Outreach Generator</button>
+  <button class="mode-btn active" id="mode-growth" onclick="setMode('growth')">🎯 Growth Agent</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     OUTREACH GENERATOR (existing)
+════════════════════════════════════════════════════════════════════════════ -->
+<div id="outreach-mode" hidden>
 <div class="container">
 
-  <div class="input-card">
-    <h2>Generate Content Package</h2>
-    <div class="input-row">
-      <div class="field">
+  <div class="card">
+    <div class="card-title">Generate Outreach Package</div>
+    <div class="field-grid cols-2">
+      <div>
         <label>Business Type</label>
-        <input type="text" id="businessType" placeholder="e.g. dental clinic, HVAC company, law firm" />
+        <input type="text" id="businessType" placeholder="e.g. dental clinic, HVAC company" />
       </div>
-      <div class="field">
+      <div>
         <label>Location</label>
         <input type="text" id="location" placeholder="e.g. Austin, TX" />
       </div>
     </div>
-    <button id="generateBtn" onclick="generate()">Generate Outreach Package</button>
+    <div style="margin-top:16px">
+      <button id="generateBtn" class="btn btn-primary btn-full" onclick="generate()">Generate Outreach Package</button>
+    </div>
   </div>
 
-  <!-- Placeholder state -->
-  <div id="placeholder">
+  <div id="o-placeholder">
     <div class="placeholder-grid">
-      <div class="placeholder-card">
-        <div class="icon">🤖</div>
-        <div class="name">Retell AI Prompt</div>
-        <div>AI receptionist script</div>
-      </div>
-      <div class="placeholder-card">
-        <div class="icon">🌐</div>
-        <div class="name">Website Outline</div>
-        <div>Pages, copy & SEO</div>
-      </div>
-      <div class="placeholder-card">
-        <div class="icon">📞</div>
-        <div class="name">Cold Call Script</div>
-        <div>With objection handlers</div>
-      </div>
-      <div class="placeholder-card">
-        <div class="icon">💬</div>
-        <div class="name">SMS Follow-Ups</div>
-        <div>5-message sequence</div>
-      </div>
-      <div class="placeholder-card">
-        <div class="icon">🎉</div>
-        <div class="name">Welcome Package</div>
-        <div>Post-close onboarding email</div>
-      </div>
+      <div class="placeholder-card"><div class="icon">🤖</div><div class="name">Retell AI Prompt</div><div>AI receptionist script</div></div>
+      <div class="placeholder-card"><div class="icon">🌐</div><div class="name">Website Outline</div><div>Pages, copy & SEO</div></div>
+      <div class="placeholder-card"><div class="icon">📞</div><div class="name">Cold Call Script</div><div>With objection handlers</div></div>
+      <div class="placeholder-card"><div class="icon">💬</div><div class="name">SMS Follow-Ups</div><div>5-message sequence</div></div>
+      <div class="placeholder-card" style="grid-column:1/-1"><div class="icon">🎉</div><div class="name">Welcome Package</div><div>Post-close onboarding email</div></div>
     </div>
   </div>
 
-  <!-- Results state -->
-  <div id="results">
+  <div id="o-results" hidden>
     <div class="tabs">
-      <button class="tab-btn active" data-section="retell" onclick="switchTab('retell')">
-        <span class="status-dot" id="dot-retell"></span> 🤖 Retell AI
-      </button>
-      <button class="tab-btn" data-section="website" onclick="switchTab('website')">
-        <span class="status-dot" id="dot-website"></span> 🌐 Website
-      </button>
-      <button class="tab-btn" data-section="coldcall" onclick="switchTab('coldcall')">
-        <span class="status-dot" id="dot-coldcall"></span> 📞 Cold Call
-      </button>
-      <button class="tab-btn" data-section="sms" onclick="switchTab('sms')">
-        <span class="status-dot" id="dot-sms"></span> 💬 SMS
-      </button>
-      <button class="tab-btn" data-section="welcome" onclick="switchTab('welcome')">
-        <span class="status-dot" id="dot-welcome"></span> 🎉 Welcome
-      </button>
+      <button class="tab-btn active" data-section="retell" onclick="switchTab('retell')"><span class="dot" id="dot-retell"></span> 🤖 Retell AI</button>
+      <button class="tab-btn" data-section="website" onclick="switchTab('website')"><span class="dot" id="dot-website"></span> 🌐 Website</button>
+      <button class="tab-btn" data-section="coldcall" onclick="switchTab('coldcall')"><span class="dot" id="dot-coldcall"></span> 📞 Cold Call</button>
+      <button class="tab-btn" data-section="sms" onclick="switchTab('sms')"><span class="dot" id="dot-sms"></span> 💬 SMS</button>
+      <button class="tab-btn" data-section="welcome" onclick="switchTab('welcome')"><span class="dot" id="dot-welcome"></span> 🎉 Welcome</button>
     </div>
-
     <div class="output-card">
       <div class="output-header">
-        <span class="section-title" id="activeLabel">Retell AI Receptionist Prompt</span>
+        <span class="section-title" id="o-activeLabel">Retell AI Receptionist Prompt</span>
         <button class="copy-btn" onclick="copyActive()">Copy</button>
       </div>
       <div class="output-body" id="outputBody"></div>
@@ -343,142 +434,784 @@
   </div>
 
 </div>
+</div>
 
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     GROWTH AGENT (new 4-step pipeline)
+════════════════════════════════════════════════════════════════════════════ -->
+<div id="growth-mode">
+<div class="container">
+
+  <!-- ── STEP 1: BUSINESS INFO ──────────────────────────────────────────── -->
+  <div class="card" id="g-step1">
+    <div class="step-header">
+      <div class="step-num active" id="snum-1">1</div>
+      <div>
+        <div class="step-title">Business Info</div>
+        <div class="step-subtitle">Enter the target business details</div>
+      </div>
+    </div>
+
+    <div class="field-grid cols-2">
+      <div>
+        <label>Business Name *</label>
+        <input type="text" id="g-name" placeholder="e.g. Prestige Medspa" />
+      </div>
+      <div>
+        <label>Industry *</label>
+        <select id="g-industry">
+          <option value="">Select industry...</option>
+          <option>Medspa</option>
+          <option>Barbershop</option>
+          <option>Restaurant</option>
+          <option>Auto Shop</option>
+          <option>Dentist</option>
+          <option>Landscaping</option>
+          <option>Roofing</option>
+          <option>Gym</option>
+          <option>Salon</option>
+          <option>Clinic</option>
+          <option>Law Firm</option>
+          <option>Plumber</option>
+          <option>HVAC</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div>
+        <label>City *</label>
+        <input type="text" id="g-city" placeholder="e.g. Miami, FL" />
+      </div>
+      <div>
+        <label>Phone</label>
+        <input type="text" id="g-phone" placeholder="e.g. (305) 555-0100" />
+      </div>
+      <div style="grid-column:1/-1">
+        <label>Address</label>
+        <input type="text" id="g-address" placeholder="e.g. 1234 Brickell Ave, Miami, FL 33131" />
+      </div>
+      <div>
+        <label>Owner Name (optional)</label>
+        <input type="text" id="g-owner" placeholder="e.g. Maria Gonzalez" />
+      </div>
+      <div>
+        <label>Existing Website (optional)</label>
+        <input type="url" id="g-website" placeholder="e.g. https://oldsite.com" />
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="field-grid cols-2">
+      <div>
+        <label>Google Rating (1–5)</label>
+        <input type="number" id="g-rating" min="1" max="5" step="0.1" placeholder="e.g. 4.8" />
+      </div>
+      <div>
+        <label>Number of Reviews</label>
+        <input type="number" id="g-reviews" min="0" placeholder="e.g. 127" />
+      </div>
+    </div>
+
+    <div style="margin-top:20px;display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-primary" onclick="saveStep1()">Continue → Review Analysis</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 2: REVIEW ANALYSIS ────────────────────────────────────────── -->
+  <div class="card locked" id="g-step2">
+    <div class="step-header">
+      <div class="step-num" id="snum-2">2</div>
+      <div>
+        <div class="step-title">Review Analysis</div>
+        <div class="step-subtitle">Paste Google reviews — Claude extracts copy, tone, and insights</div>
+      </div>
+      <span class="dot" id="dot-analyze" style="margin-left:auto"></span>
+    </div>
+
+    <div>
+      <label>Paste Google Reviews *</label>
+      <textarea id="g-reviewText" rows="8" placeholder="Paste the raw text of Google reviews here. The more the better — aim for 5–20 reviews.&#10;&#10;Example:&#10;★★★★★ — Maria S.&#10;Best medspa in Miami! I've been coming for 3 years and the results are incredible...&#10;&#10;★★★★★ — James T.&#10;Dr. Rodriguez is amazing. My skin has never looked better..."></textarea>
+    </div>
+
+    <div style="margin-top:16px;display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-primary" id="analyzeBtn" onclick="analyzeReviews()">Analyze Reviews</button>
+    </div>
+
+    <!-- Analysis results (hidden until done) -->
+    <div id="g-analysisResults" hidden>
+      <hr class="divider" />
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:16px">
+        Analysis Complete ✓
+      </div>
+
+      <div class="analysis-grid">
+        <div class="analysis-block full">
+          <h4>Hero Headline</h4>
+          <div class="headline-text" id="a-headline"></div>
+          <div class="sub-text" id="a-subheadline"></div>
+        </div>
+
+        <div class="analysis-block">
+          <h4>Top Services</h4>
+          <div class="tag-list" id="a-services"></div>
+        </div>
+
+        <div class="analysis-block">
+          <h4>Customer Keywords</h4>
+          <div class="tag-list" id="a-keywords"></div>
+        </div>
+
+        <div class="analysis-block">
+          <h4>Trust Factors</h4>
+          <div class="tag-list" id="a-trust"></div>
+        </div>
+
+        <div class="analysis-block">
+          <h4>Brand Color</h4>
+          <div id="a-color" style="display:flex;align-items:center;font-size:13px;margin-top:4px"></div>
+        </div>
+
+        <div class="analysis-block full">
+          <h4>Top Testimonials</h4>
+          <div id="a-testimonials"></div>
+        </div>
+
+        <div class="analysis-block full">
+          <h4>Website Weakness Found</h4>
+          <div id="a-weakness" style="font-size:13px;color:var(--text);line-height:1.6"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;display:flex;gap:10px;justify-content:flex-end">
+        <button class="btn btn-primary" onclick="unlockStep3()">Continue → Generate Website</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STEP 3: WEBSITE GENERATOR ─────────────────────────────────────── -->
+  <div class="card locked" id="g-step3">
+    <div class="step-header">
+      <div class="step-num" id="snum-3">3</div>
+      <div>
+        <div class="step-title">Website Generator</div>
+        <div class="step-subtitle">Claude builds a full premium HTML website personalized to this business</div>
+      </div>
+      <span class="dot" id="dot-website-gen" style="margin-left:auto"></span>
+    </div>
+
+    <div id="g-websiteIdle">
+      <p style="color:var(--text-muted);font-size:13px;margin-bottom:16px">
+        Ready to generate a complete, premium website using the review data and business info above.
+        The site includes: hero, services, testimonials, FAQ, contact form, and more.
+      </p>
+      <button class="btn btn-primary" id="buildBtn" onclick="generateWebsite()">⚡ Generate Website</button>
+    </div>
+
+    <div id="g-websiteBuilding" hidden>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:13px;color:var(--text-muted)">
+        <span class="dot loading"></span> Building your website...
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar" id="g-progress"></div></div>
+      <div class="code-preview" id="g-codeStream"></div>
+    </div>
+
+    <div id="g-websiteDone" hidden>
+      <div class="alert alert-success">Website generated successfully — 100% complete</div>
+
+      <div class="website-actions">
+        <button class="btn btn-green" id="previewBtn" onclick="openPreview()">🔍 Open Live Preview</button>
+        <button class="btn btn-outline" onclick="downloadWebsite()">⬇ Download HTML</button>
+        <button class="btn btn-outline" onclick="copyWebsiteHtml()">📋 Copy HTML</button>
+      </div>
+
+      <div class="preview-wrapper" id="g-previewWrapper" hidden>
+        <div class="preview-topbar">
+          <div class="preview-dot" style="background:#ef4444"></div>
+          <div class="preview-dot" style="background:#f59e0b"></div>
+          <div class="preview-dot" style="background:#10b981"></div>
+          <span style="font-size:11px;color:var(--text-muted);margin-left:8px" id="g-previewUrl"></span>
+        </div>
+        <iframe id="previewFrame" title="Website Preview"></iframe>
+      </div>
+
+      <div style="margin-top:20px;display:flex;gap:10px;justify-content:flex-end">
+        <button class="btn btn-primary" onclick="unlockStep4()">Continue → Generate Cold Email</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STEP 4: COLD EMAIL ─────────────────────────────────────────────── -->
+  <div class="card locked" id="g-step4">
+    <div class="step-header">
+      <div class="step-num" id="snum-4">4</div>
+      <div>
+        <div class="step-title">Cold Email Outreach</div>
+        <div class="step-subtitle">Personalized 3-email sequence mentioning their reviews and demo site</div>
+      </div>
+      <span class="dot" id="dot-email-gen" style="margin-left:auto"></span>
+    </div>
+
+    <div id="g-emailIdle">
+      <div class="field-grid cols-2" style="margin-bottom:16px">
+        <div>
+          <label>Demo URL (the preview link)</label>
+          <input type="text" id="g-demoUrl" placeholder="Will auto-fill from generated site" />
+        </div>
+        <div>
+          <label>Sender Name / Agency</label>
+          <input type="text" id="g-senderName" placeholder="e.g. Alex from WebPro Agency" />
+        </div>
+      </div>
+      <button class="btn btn-primary" id="emailBtn" onclick="generateEmail()">✉ Generate Email Sequence</button>
+    </div>
+
+    <div id="g-emailBuilding" hidden>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:13px;color:var(--text-muted)">
+        <span class="dot loading"></span> Writing personalized emails...
+      </div>
+    </div>
+
+    <div id="g-emailDone" hidden>
+      <div class="alert alert-success">3-email sequence ready to send</div>
+
+      <div id="g-emailOutput">
+        <!-- Email sections rendered here by JS -->
+      </div>
+    </div>
+  </div>
+
+</div>
+</div><!-- end growth-mode -->
+
+<!-- ─────────────────────────────────────────────────────────────────────────
+     JAVASCRIPT
+──────────────────────────────────────────────────────────────────────────── -->
 <script>
-  const sections = ['retell', 'website', 'coldcall', 'sms', 'welcome'];
-  const sectionLabels = {
-    retell: 'Retell AI Receptionist Prompt',
-    website: 'Website Outline',
-    coldcall: 'Cold Call Script',
-    sms: 'SMS Follow-Up Sequence',
-    welcome: 'Client Welcome Package'
+// ── STATE ────────────────────────────────────────────────────────────────────
+const state = {
+  mode: 'growth',
+  step1: null,
+  analysis: null,
+  generatedHtml: '',
+  previewId: null,
+  emailText: '',
+};
+
+// ── MODE SWITCHING ────────────────────────────────────────────────────────────
+function setMode(mode) {
+  state.mode = mode;
+  document.getElementById('growth-mode').hidden = mode !== 'growth';
+  document.getElementById('outreach-mode').hidden = mode !== 'outreach';
+  document.getElementById('mode-growth').classList.toggle('active', mode === 'growth');
+  document.getElementById('mode-outreach').classList.toggle('active', mode === 'outreach');
+}
+
+// Initialize to growth mode
+setMode('growth');
+
+// ── STEP UTILITIES ────────────────────────────────────────────────────────────
+function markStepDone(num) {
+  const el = document.getElementById(`snum-${num}`);
+  el.className = 'step-num done';
+  el.textContent = '✓';
+}
+
+function unlockCard(id, stepNum) {
+  const card = document.getElementById(id);
+  card.classList.remove('locked');
+  const el = document.getElementById(`snum-${stepNum}`);
+  if (el && el.textContent !== '✓') el.className = 'step-num active';
+  card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── STEP 1: SAVE BUSINESS INFO ────────────────────────────────────────────────
+function saveStep1() {
+  const name = document.getElementById('g-name').value.trim();
+  const industry = document.getElementById('g-industry').value;
+  const city = document.getElementById('g-city').value.trim();
+
+  if (!name || !industry || !city) {
+    alert('Please fill in Business Name, Industry, and City.');
+    return;
+  }
+
+  state.step1 = {
+    name, industry, city,
+    phone: document.getElementById('g-phone').value.trim(),
+    address: document.getElementById('g-address').value.trim(),
+    owner: document.getElementById('g-owner').value.trim(),
+    existingWebsite: document.getElementById('g-website').value.trim(),
+    rating: parseFloat(document.getElementById('g-rating').value) || 4.8,
+    reviewCount: parseInt(document.getElementById('g-reviews').value) || 50,
   };
 
-  const content = { retell: '', website: '', coldcall: '', sms: '', welcome: '' };
-  let activeSection = 'retell';
+  markStepDone(1);
+  unlockCard('g-step2', 2);
+}
 
-  function switchTab(section) {
-    activeSection = section;
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector(`[data-section="${section}"]`).classList.add('active');
-    document.getElementById('activeLabel').textContent = sectionLabels[section];
-    renderOutput();
+// ── STEP 2: ANALYZE REVIEWS ───────────────────────────────────────────────────
+async function analyzeReviews() {
+  const reviews = document.getElementById('g-reviewText').value.trim();
+  if (!reviews || reviews.length < 30) {
+    alert('Please paste at least a few reviews to analyze.');
+    return;
   }
 
-  function renderOutput() {
-    const body = document.getElementById('outputBody');
-    const text = content[activeSection];
-    if (!text) {
-      body.className = 'output-body empty';
-      body.innerHTML = 'Waiting to generate...';
-    } else {
-      body.className = 'output-body';
-      body.innerHTML = renderMarkdown(text);
-    }
-  }
+  const btn = document.getElementById('analyzeBtn');
+  btn.disabled = true;
+  btn.textContent = 'Analyzing...';
+  document.getElementById('dot-analyze').className = 'dot loading';
+  document.getElementById('g-analysisResults').hidden = true;
 
-  function renderMarkdown(text) {
-    return text
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/^### (.+)$/gm, '<span class="md-h3">$1</span>')
-      .replace(/^## (.+)$/gm, '<span class="md-h2">$1</span>')
-      .replace(/^# (.+)$/gm, '<span class="md-h1">$1</span>')
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/^[-*] (.+)$/gm, '<span class="md-bullet">• $1</span>');
-  }
-
-  async function generate() {
-    const businessType = document.getElementById('businessType').value.trim();
-    const location = document.getElementById('location').value.trim();
-
-    if (!businessType || !location) {
-      alert('Please enter both a business type and location.');
-      return;
-    }
-
-    // Reset
-    sections.forEach(s => {
-      content[s] = '';
-      document.getElementById(`dot-${s}`).className = 'status-dot';
+  try {
+    const resp = await fetch('/api/growth/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        businessName: state.step1.name,
+        industry: state.step1.industry,
+        city: state.step1.city,
+        reviews
+      })
     });
 
-    document.getElementById('placeholder').style.display = 'none';
-    document.getElementById('results').style.display = 'block';
-    document.getElementById('generateBtn').disabled = true;
-    document.getElementById('generateBtn').textContent = 'Generating...';
+    const data = await resp.json();
+    if (!data.success) throw new Error(data.error || 'Analysis failed');
 
-    switchTab('retell');
+    state.analysis = data.analysis;
+    renderAnalysis(data.analysis);
+    document.getElementById('dot-analyze').className = 'dot done';
+    document.getElementById('g-analysisResults').hidden = false;
 
-    try {
-      const resp = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ businessType, location })
-      });
+  } catch (err) {
+    document.getElementById('dot-analyze').className = 'dot error';
+    alert('Analysis error: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Analyze Reviews';
+  }
+}
 
-      const reader = resp.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = '';
+function renderAnalysis(a) {
+  document.getElementById('a-headline').textContent = a.headline || '';
+  document.getElementById('a-subheadline').textContent = a.subheadline || '';
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
+  const makeTagList = (id, arr, cls) => {
+    document.getElementById(id).innerHTML = (arr || [])
+      .map(t => `<span class="tag${cls ? ' ' + cls : ''}">${t}</span>`).join('');
+  };
 
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split('\n');
-        buffer = lines.pop();
+  makeTagList('a-services', a.topServices, 'accent');
+  makeTagList('a-keywords', a.customerKeywords);
+  makeTagList('a-trust', a.trustFactors);
 
-        for (const line of lines) {
-          if (!line.startsWith('data: ')) continue;
-          try {
-            const event = JSON.parse(line.slice(6));
-            handleEvent(event);
-          } catch {}
+  const color = a.colorScheme || '#6366f1';
+  document.getElementById('a-color').innerHTML =
+    `<span class="color-swatch" style="background:${color}"></span><code style="font-size:12px">${color}</code>
+     <span style="margin-left:8px;color:var(--text-muted);font-size:12px">— ${state.step1.industry} palette</span>`;
+
+  const testimonialsEl = document.getElementById('a-testimonials');
+  testimonialsEl.innerHTML = (a.testimonials || []).map(t =>
+    `<div class="testimonial-card">
+      <p>"${t.text}"</p>
+      <span>— ${t.author}</span>
+    </div>`
+  ).join('');
+
+  document.getElementById('a-weakness').textContent = a.websiteWeakness || '';
+}
+
+function unlockStep3() {
+  markStepDone(2);
+  unlockCard('g-step3', 3);
+}
+
+// ── STEP 3: GENERATE WEBSITE ──────────────────────────────────────────────────
+async function generateWebsite() {
+  if (!state.analysis) { alert('Please complete the review analysis first.'); return; }
+
+  document.getElementById('g-websiteIdle').hidden = true;
+  document.getElementById('g-websiteBuilding').hidden = false;
+  document.getElementById('g-websiteDone').hidden = true;
+  document.getElementById('dot-website-gen').className = 'dot loading';
+  document.getElementById('buildBtn').disabled = true;
+
+  const codeEl = document.getElementById('g-codeStream');
+  const progressEl = document.getElementById('g-progress');
+  codeEl.textContent = '';
+  state.generatedHtml = '';
+  state.previewId = null;
+
+  const s = state.step1;
+
+  try {
+    const resp = await fetch('/api/growth/website', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        businessName: s.name,
+        industry: s.industry,
+        city: s.city,
+        phone: s.phone,
+        address: s.address,
+        rating: s.rating,
+        reviewCount: s.reviewCount,
+        analysis: state.analysis
+      })
+    });
+
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let charCount = 0;
+    const ESTIMATED_TOTAL = 20000; // chars
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop();
+
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        try {
+          const event = JSON.parse(line.slice(6));
+          if (event.type === 'token') {
+            state.generatedHtml += event.text;
+            charCount += event.text.length;
+            codeEl.textContent = state.generatedHtml.slice(-600);
+            codeEl.scrollTop = codeEl.scrollHeight;
+            progressEl.style.width = Math.min(95, (charCount / ESTIMATED_TOTAL) * 100) + '%';
+          } else if (event.type === 'done') {
+            state.previewId = event.previewId;
+            progressEl.style.width = '100%';
+          } else if (event.type === 'error') {
+            throw new Error(event.message);
+          }
+        } catch (e) {
+          if (e.message && e.message !== 'Unexpected end of JSON input') {
+            throw e;
+          }
         }
       }
-    } catch (err) {
-      alert('Error: ' + err.message);
     }
 
-    document.getElementById('generateBtn').disabled = false;
-    document.getElementById('generateBtn').textContent = 'Generate Outreach Package';
+    document.getElementById('dot-website-gen').className = 'dot done';
+    document.getElementById('g-websiteBuilding').hidden = true;
+    document.getElementById('g-websiteDone').hidden = false;
+
+    // Pre-fill demo URL in email step
+    if (state.previewId) {
+      const previewUrl = `${window.location.origin}/preview/${state.previewId}`;
+      document.getElementById('g-demoUrl').value = previewUrl;
+    }
+
+  } catch (err) {
+    document.getElementById('dot-website-gen').className = 'dot error';
+    document.getElementById('g-websiteIdle').hidden = false;
+    document.getElementById('g-websiteBuilding').hidden = true;
+    document.getElementById('buildBtn').disabled = false;
+    alert('Website generation error: ' + err.message);
+  }
+}
+
+function openPreview() {
+  const wrapper = document.getElementById('g-previewWrapper');
+  wrapper.hidden = false;
+  const frame = document.getElementById('previewFrame');
+
+  if (state.previewId) {
+    const url = `/preview/${state.previewId}`;
+    document.getElementById('g-previewUrl').textContent = url;
+    frame.src = url;
+  } else {
+    // Fallback: write HTML directly into the iframe
+    const doc = frame.contentDocument || frame.contentWindow.document;
+    doc.open(); doc.write(state.generatedHtml); doc.close();
+    document.getElementById('g-previewUrl').textContent = 'preview (local)';
   }
 
-  function handleEvent(event) {
-    if (event.type === 'section_start') {
-      document.getElementById(`dot-${event.section}`).className = 'status-dot loading';
-      if (activeSection === event.section) renderOutput();
-    }
-    else if (event.type === 'token') {
-      content[event.section] += event.text;
-      if (activeSection === event.section) renderOutput();
-    }
-    else if (event.type === 'section_end') {
-      document.getElementById(`dot-${event.section}`).className = 'status-dot done';
-    }
-    else if (event.type === 'error') {
-      alert('Generation error: ' + event.message);
-    }
-  }
+  wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
-  function copyActive() {
-    const text = content[activeSection];
-    if (!text) return;
-    navigator.clipboard.writeText(text).then(() => {
-      const btn = document.querySelector('.copy-btn');
-      btn.textContent = 'Copied!';
-      btn.classList.add('copied');
-      setTimeout(() => {
-        btn.textContent = 'Copy';
-        btn.classList.remove('copied');
-      }, 2000);
-    });
-  }
+function downloadWebsite() {
+  if (!state.generatedHtml) return;
+  const slug = (state.step1?.name || 'website').toLowerCase().replace(/\s+/g, '-');
+  const blob = new Blob([state.generatedHtml], { type: 'text/html' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${slug}-website.html`;
+  a.click();
+}
 
-  // Allow Enter key to trigger generation
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !document.getElementById('generateBtn').disabled) generate();
+function copyWebsiteHtml() {
+  if (!state.generatedHtml) return;
+  navigator.clipboard.writeText(state.generatedHtml).then(() => {
+    const btn = event.target;
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy HTML', 2000);
   });
+}
+
+function unlockStep4() {
+  markStepDone(3);
+  unlockCard('g-step4', 4);
+}
+
+// ── STEP 4: GENERATE EMAIL ────────────────────────────────────────────────────
+async function generateEmail() {
+  const s = state.step1;
+  const a = state.analysis || {};
+
+  document.getElementById('g-emailIdle').hidden = true;
+  document.getElementById('g-emailBuilding').hidden = false;
+  document.getElementById('g-emailDone').hidden = true;
+  document.getElementById('dot-email-gen').className = 'dot loading';
+  document.getElementById('emailBtn').disabled = true;
+
+  const demoUrl = document.getElementById('g-demoUrl').value.trim() ||
+    (state.previewId ? `${window.location.origin}/preview/${state.previewId}` : '[DEMO LINK]');
+
+  const reviewHighlight = (a.testimonials || [])[0]?.text || (a.topPraises || [])[0] || 'excellent service';
+
+  state.emailText = '';
+
+  try {
+    const resp = await fetch('/api/growth/email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        businessName: s.name,
+        ownerName: s.owner,
+        industry: s.industry,
+        city: s.city,
+        reviewHighlight,
+        websiteWeakness: a.websiteWeakness || 'weak online presence',
+        demoUrl
+      })
+    });
+
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop();
+
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        try {
+          const event = JSON.parse(line.slice(6));
+          if (event.type === 'token') state.emailText += event.text;
+        } catch {}
+      }
+    }
+
+    document.getElementById('dot-email-gen').className = 'dot done';
+    document.getElementById('g-emailBuilding').hidden = true;
+    document.getElementById('g-emailDone').hidden = false;
+    renderEmailOutput(state.emailText);
+    markStepDone(4);
+
+  } catch (err) {
+    document.getElementById('dot-email-gen').className = 'dot error';
+    document.getElementById('g-emailIdle').hidden = false;
+    document.getElementById('g-emailBuilding').hidden = true;
+    document.getElementById('emailBtn').disabled = false;
+    alert('Email generation error: ' + err.message);
+  }
+}
+
+function renderEmailOutput(text) {
+  // Parse the structured email output
+  const sections = parseEmailSections(text);
+  const container = document.getElementById('g-emailOutput');
+  container.innerHTML = sections.map((s, i) => `
+    <div class="email-section">
+      <div class="email-section-header">
+        <span>${s.label}</span>
+        <button class="copy-btn" onclick="copyText(this, \`${escapeBacktick(s.content)}\`)">Copy</button>
+      </div>
+      <div class="email-body">${escapeHtml(s.content)}</div>
+    </div>
+  `).join('');
+}
+
+function parseEmailSections(text) {
+  const sections = [];
+
+  // Extract subject + email pairs
+  const patterns = [
+    { label: '✉ Email 1 — Subject Line', key: 'SUBJECT LINE:' },
+    { label: '✉ Email 1 — Body', key: 'EMAIL 1:' },
+    { label: '✉ Email 2 — Subject Line', key: 'SUBJECT LINE 2:' },
+    { label: '✉ Email 2 — Body (Day 3)', key: 'EMAIL 2 (send day 3):' },
+    { label: '✉ Email 3 — Subject Line', key: 'SUBJECT LINE 3:' },
+    { label: '✉ Email 3 — Body (Day 7)', key: 'EMAIL 3 (send day 7):' },
+  ];
+
+  // Find positions of each key
+  const positions = patterns.map(p => ({
+    ...p,
+    pos: text.indexOf(p.key)
+  })).filter(p => p.pos !== -1).sort((a, b) => a.pos - b.pos);
+
+  for (let i = 0; i < positions.length; i++) {
+    const start = positions[i].pos + positions[i].key.length;
+    const end = i + 1 < positions.length ? positions[i + 1].pos : text.length;
+    const content = text.slice(start, end).replace(/^---+\s*/gm, '').trim();
+    if (content) sections.push({ label: positions[i].label, content });
+  }
+
+  // Fallback: if parsing fails, show the whole text in one block
+  if (sections.length === 0) {
+    sections.push({ label: '✉ Email Sequence', content: text.trim() });
+  }
+
+  return sections;
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function escapeBacktick(str) {
+  return str.replace(/`/g, '\\`').replace(/\\/g, '\\\\');
+}
+
+function copyText(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// ── OUTREACH GENERATOR (existing logic) ──────────────────────────────────────
+
+const oSections = ['retell', 'website', 'coldcall', 'sms', 'welcome'];
+const oLabels = {
+  retell: 'Retell AI Receptionist Prompt',
+  website: 'Website Outline',
+  coldcall: 'Cold Call Script',
+  sms: 'SMS Follow-Up Sequence',
+  welcome: 'Client Welcome Package'
+};
+const oContent = { retell: '', website: '', coldcall: '', sms: '', welcome: '' };
+let oActiveSection = 'retell';
+
+function switchTab(section) {
+  oActiveSection = section;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`[data-section="${section}"]`).classList.add('active');
+  document.getElementById('o-activeLabel').textContent = oLabels[section];
+  renderOOutput();
+}
+
+function renderOOutput() {
+  const body = document.getElementById('outputBody');
+  const text = oContent[oActiveSection];
+  if (!text) {
+    body.className = 'output-body empty';
+    body.innerHTML = 'Waiting to generate...';
+  } else {
+    body.className = 'output-body';
+    body.innerHTML = renderMarkdown(text);
+  }
+}
+
+function renderMarkdown(text) {
+  return text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/^### (.+)$/gm, '<span class="md-h3">$1</span>')
+    .replace(/^## (.+)$/gm, '<span class="md-h2">$1</span>')
+    .replace(/^# (.+)$/gm, '<span class="md-h1">$1</span>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/^[-*] (.+)$/gm, '<span class="md-bullet">• $1</span>');
+}
+
+async function generate() {
+  const businessType = document.getElementById('businessType').value.trim();
+  const location = document.getElementById('location').value.trim();
+  if (!businessType || !location) { alert('Please enter both a business type and location.'); return; }
+
+  oSections.forEach(s => {
+    oContent[s] = '';
+    document.getElementById(`dot-${s}`).className = 'dot';
+  });
+
+  document.getElementById('o-placeholder').hidden = true;
+  document.getElementById('o-results').hidden = false;
+  document.getElementById('generateBtn').disabled = true;
+  document.getElementById('generateBtn').textContent = 'Generating...';
+  switchTab('retell');
+
+  try {
+    const resp = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ businessType, location })
+    });
+
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop();
+
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        try {
+          const event = JSON.parse(line.slice(6));
+          handleOEvent(event);
+        } catch {}
+      }
+    }
+  } catch (err) { alert('Error: ' + err.message); }
+
+  document.getElementById('generateBtn').disabled = false;
+  document.getElementById('generateBtn').textContent = 'Generate Outreach Package';
+}
+
+function handleOEvent(event) {
+  if (event.type === 'section_start') {
+    document.getElementById(`dot-${event.section}`).className = 'dot loading';
+    if (oActiveSection === event.section) renderOOutput();
+  } else if (event.type === 'token') {
+    oContent[event.section] += event.text;
+    if (oActiveSection === event.section) renderOOutput();
+  } else if (event.type === 'section_end') {
+    document.getElementById(`dot-${event.section}`).className = 'dot done';
+  } else if (event.type === 'error') {
+    alert('Generation error: ' + event.message);
+  }
+}
+
+function copyActive() {
+  const text = oContent[oActiveSection];
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && state.mode === 'outreach' &&
+      !document.getElementById('generateBtn').disabled) generate();
+});
 </script>
 
 </body>
