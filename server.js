@@ -370,6 +370,25 @@ app.post('/api/leads/search', async (req, res) => {
   }
 });
 
+// ─── LEAD REVIEWS ENDPOINT ───────────────────────────────────────────────────
+// Fetches reviews for a single place on-demand (used by Outscraper provider
+// to avoid fetching reviews for every result during search).
+
+app.post('/api/leads/reviews', async (req, res) => {
+  const { placeId } = req.body;
+
+  if (!placeId) {
+    return res.status(400).json({ error: 'placeId is required' });
+  }
+
+  try {
+    const reviews = await leadProvider.getReviews(placeId);
+    res.json({ success: true, reviews });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ─── EXISTING ENDPOINT ───────────────────────────────────────────────────────
 
 app.post('/api/generate', async (req, res) => {

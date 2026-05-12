@@ -661,8 +661,8 @@
     <div id="s-results" hidden>
       <div class="demo-banner" id="s-demoBanner">
         ⚠ <strong>Demo Mode</strong> — results below are generated sample data so you can test the full pipeline.
-        Connect <strong>Google Places API</strong>, <strong>SerpAPI</strong>, or <strong>Outscraper</strong> via the
-        <code>LEAD_PROVIDER</code> env var for real leads.
+        Set <code>LEAD_PROVIDER=outscraper</code> and <code>OUTSCRAPER_API_KEY=&lt;key&gt;</code> in your .env for real leads.
+        <a href="https://outscraper.com/" target="_blank" style="color:var(--amber);text-decoration:underline">Get an Outscraper key →</a>
       </div>
 
       <!-- Filter bar -->
@@ -759,18 +759,27 @@
       <div class="step-num" id="snum-2">2</div>
       <div>
         <div class="step-title">Review Analysis</div>
-        <div class="step-subtitle">Paste Google reviews — Claude extracts copy, tone, and insights</div>
+        <div class="step-subtitle">Claude extracts copy, tone, and insights from Google reviews</div>
       </div>
       <span class="dot" id="dot-analyze" style="margin-left:auto"></span>
     </div>
 
-    <div>
-      <label>Paste Google Reviews *</label>
-      <textarea id="g-reviewText" rows="8" placeholder="Paste the raw text of Google reviews here. The more the better — aim for 5–20 reviews.&#10;&#10;Example:&#10;★★★★★ — Maria S.&#10;Best medspa in Miami! I've been coming for 3 years and the results are incredible...&#10;&#10;★★★★★ — James T.&#10;Dr. Rodriguez is amazing. My skin has never looked better..."></textarea>
+    <!-- Review fetch status (shown only for live providers) -->
+    <div id="g-reviewFetchStatus" hidden
+         style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(99,102,241,0.07);border:1px solid rgba(99,102,241,0.2);border-radius:8px;font-size:12px;color:#a5b4fc;margin-bottom:14px">
+      <span class="dot loading"></span>
+      <span id="g-reviewFetchMsg">Fetching reviews from Outscraper…</span>
     </div>
 
-    <div style="margin-top:16px;display:flex;gap:10px;justify-content:flex-end">
+    <div>
+      <label id="g-reviewLabel">Paste Google Reviews *</label>
+      <textarea id="g-reviewText" rows="8"
+        placeholder="Paste the raw text of Google reviews here. The more the better — aim for 5–20 reviews.&#10;&#10;Example:&#10;★★★★★ — Maria S.&#10;Best medspa in Miami! I've been coming for 3 years and the results are incredible...&#10;&#10;★★★★★ — James T.&#10;Dr. Rodriguez is amazing. My skin has never looked better..."></textarea>
+    </div>
+
+    <div style="margin-top:16px;display:flex;gap:10px;align-items:center">
       <button class="btn btn-primary" id="analyzeBtn" onclick="analyzeReviews()">Analyze Reviews</button>
+      <span style="font-size:11px;color:var(--text-muted)" id="g-reviewSource"></span>
     </div>
 
     <!-- Analysis results (hidden until done) -->
@@ -931,6 +940,11 @@ const state = {
   generatedHtml: '',
   previewId: null,
   emailText: '',
+  provider: 'mock',      // 'mock' | 'outscraper' — set after each search
+  searchResults: [],
+  activeFilter: 'all',
+  selectedLeadIdx: null,
+  selectedLead: null,
 };
 
 // ── MODE SWITCHING ────────────────────────────────────────────────────────────
@@ -1330,10 +1344,6 @@ function copyText(btn, text) {
 
 // ── STEP 0: FIND LEADS ────────────────────────────────────────────────────────
 
-state.searchResults = [];
-state.activeFilter  = 'all';
-state.selectedLeadIdx = null;
-
 async function findLeads() {
   const city     = document.getElementById('s-city').value.trim();
   const industry = document.getElementById('s-industry').value;
@@ -1362,17 +1372,21 @@ async function findLeads() {
     if (!data.success) throw new Error(data.error || 'Search failed');
 
     state.searchResults = data.leads;
+    state.provider      = data.provider || 'mock';
 
     // Update provider badge
     const badge = document.getElementById('providerBadge');
-    if (data.provider === 'mock') {
+    const isLive = state.provider !== 'mock';
+    if (isLive) {
+      badge.className = 'provider-badge live';
+      badge.textContent = `✓ ${capitalize(state.provider)}`;
+      badge.title = `Live data from ${state.provider}`;
+      document.getElementById('s-demoBanner').hidden = true;
+    } else {
       badge.className = 'provider-badge mock';
       badge.textContent = '⚠ Demo Data';
+      badge.title = 'Using demo data. Set LEAD_PROVIDER=outscraper in .env for real leads.';
       document.getElementById('s-demoBanner').hidden = false;
-    } else {
-      badge.className = 'provider-badge live';
-      badge.textContent = '✓ Live Data';
-      document.getElementById('s-demoBanner').hidden = true;
     }
 
     document.getElementById('s-results').hidden = false;
@@ -1512,61 +1526,108 @@ function toggleReviews(idx) {
   btn.textContent = el.classList.contains('open') ? '▾ Hide review snippets' : '▸ Show review snippets';
 }
 
-function selectLead(idx) {
+async function selectLead(idx) {
   const lead = state.searchResults[idx];
   if (!lead) return;
 
-  state.selectedLead  = lead;
+  state.selectedLead    = lead;
   state.selectedLeadIdx = idx;
 
   // Pre-fill Step 1 fields
   const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ''; };
-  setVal('g-name',     lead.name);
-  setVal('g-city',     lead.city);
-  setVal('g-phone',    lead.phone);
-  setVal('g-address',  lead.address);
-  setVal('g-website',  lead.websiteUrl);
-  setVal('g-owner',    lead.ownerName);
-  setVal('g-rating',   lead.rating);
-  setVal('g-reviews',  lead.reviewCount);
-  // Select the industry dropdown
+  setVal('g-name',    lead.name);
+  setVal('g-city',    lead.city);
+  setVal('g-phone',   lead.phone);
+  setVal('g-address', lead.address);
+  setVal('g-website', lead.websiteUrl);
+  setVal('g-owner',   lead.ownerName);
+  setVal('g-rating',  lead.rating);
+  setVal('g-reviews', lead.reviewCount);
   const indEl = document.getElementById('g-industry');
-  if (indEl) {
-    const opt = [...indEl.options].find(o => o.value === lead.industry);
-    if (opt) indEl.value = lead.industry;
-  }
+  if (indEl && lead.industry) indEl.value = lead.industry;
 
-  // Pre-fill Step 2 review textarea
-  if (lead.reviews && lead.reviews.length > 0) {
-    const reviewEl = document.getElementById('g-reviewText');
-    if (reviewEl) reviewEl.value = lead.reviews.join('\n\n');
-  }
-
-  // Commit Step 1 state (bypasses manual form submission)
+  // Commit Step 1 state
   state.step1 = {
-    name:           lead.name,
-    industry:       lead.industry,
-    city:           lead.city,
-    phone:          lead.phone    || '',
-    address:        lead.address  || '',
-    owner:          lead.ownerName || '',
-    existingWebsite: lead.websiteUrl || '',
-    rating:         lead.rating,
-    reviewCount:    lead.reviewCount,
+    name:            lead.name,
+    industry:        lead.industry,
+    city:            lead.city,
+    phone:           lead.phone       || '',
+    address:         lead.address     || '',
+    owner:           lead.ownerName   || '',
+    existingWebsite: lead.websiteUrl  || '',
+    rating:          lead.rating,
+    reviewCount:     lead.reviewCount,
   };
 
-  // Visual: mark Step 0 done, mark Step 1 done, unlock Step 2
+  // Mark steps done and unlock Step 2
   markStepDone(0);
   markStepDone(1);
   unlockCard('g-step2', 2);
 
-  // Re-render lead cards to show selected state
+  // Re-render cards to show selected highlight
   renderLeads();
 
-  // Scroll to Step 2 so user can click Analyze
+  // ── Fill reviews ──────────────────────────────────────────────────────────
+  const reviewEl  = document.getElementById('g-reviewText');
+  const sourceEl  = document.getElementById('g-reviewSource');
+  const statusDiv = document.getElementById('g-reviewFetchStatus');
+  const msgEl     = document.getElementById('g-reviewFetchMsg');
+
+  if (lead.reviews && lead.reviews.length > 0) {
+    // Mock provider: reviews bundled in search results
+    reviewEl.value    = lead.reviews.join('\n\n');
+    reviewEl.disabled = false;
+    statusDiv.hidden  = true;
+    sourceEl.textContent = `${lead.reviews.length} reviews loaded (${capitalize(state.provider)})`;
+  } else {
+    // Live provider (Outscraper): fetch reviews on-demand
+    reviewEl.value       = '';
+    reviewEl.disabled    = true;
+    statusDiv.hidden     = false;
+    statusDiv.style.display = 'flex';
+    msgEl.textContent    = `Fetching reviews from ${capitalize(state.provider)}…`;
+    sourceEl.textContent = '';
+    document.getElementById('analyzeBtn').disabled = true;
+
+    // Don't await — scroll immediately, reviews arrive in background
+    fetchReviewsForLead(lead.placeId, reviewEl, sourceEl, statusDiv, msgEl);
+  }
+
+  // Scroll to Step 2
   setTimeout(() => {
     document.getElementById('g-step2').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 120);
+}
+
+async function fetchReviewsForLead(placeId, reviewEl, sourceEl, statusDiv, msgEl) {
+  try {
+    const resp = await fetch('/api/leads/reviews', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ placeId })
+    });
+    const data = await resp.json();
+
+    if (data.reviews && data.reviews.length > 0) {
+      reviewEl.value       = data.reviews.join('\n\n');
+      sourceEl.textContent = `${data.reviews.length} reviews loaded (${capitalize(state.provider)})`;
+      statusDiv.hidden     = true;
+    } else {
+      statusDiv.hidden     = true;
+      sourceEl.textContent = 'No reviews returned — paste manually from Google Maps.';
+    }
+  } catch (err) {
+    statusDiv.hidden     = true;
+    sourceEl.textContent = 'Could not fetch reviews — paste manually from Google Maps.';
+  } finally {
+    reviewEl.disabled = false;
+    document.getElementById('analyzeBtn').disabled = false;
+  }
+}
+
+function capitalize(s) {
+  if (!s) return '';
+  return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
 // ── OUTREACH GENERATOR (existing logic) ──────────────────────────────────────
