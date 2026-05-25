@@ -1,0 +1,35 @@
+{
+  "campaign_name": "Metro Detroit Plumbing — Spring Promo",
+  "campaign_objective": "OUTCOME_LEADS",
+  "page_id": "YOUR_PAGE_ID",
+  "ad_set_name": "Detroit Metro 30-60 Homeowners",
+  "daily_budget_cents": 3000,
+  "targeting": {
+    "geo_locations": {
+      "cities": [
+        {
+          "key": "2421836",
+          "name": "Detroit",
+          "region": "Michigan",
+          "country": "US",
+          "radius": 30,
+          "distance_unit": "mile"
+        }
+      ],
+      "location_types": ["home", "recent"]
+    },
+    "age_min": 30,
+    "age_max": 60,
+    "interests": [
+      {"id": "6003107902433", "name": "Home improvement"},
+      {"id": "6003349442661", "name": "Do it yourself (DIY)"}
+    ],
+    "locales": [6]
+  },
+  "headline": "Detroit's Trusted Plumbers — Same-Day Service",
+  "body": "Leaky pipes? Water heater out? We're in your neighborhood and ready to help today. Serving Detroit, Warren, Dearborn, Sterling Heights, and more.",
+  "description": "Licensed & insured. Free estimates.",
+  "link_url": "https://your-plumbing-site.com/contact",
+  "call_to_action": "GET_QUOTE",
+  "status": "PAUSED"
+}
